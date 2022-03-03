@@ -1,13 +1,17 @@
 import { lazy } from 'react';
-import { IRoutes, IRoutesRedirect } from './types';
+import { IRoutes } from './types';
 
 // Pages
-// const Leagues = lazy(() => import('~pages/leagues'));
+const GetTable = lazy(() => import('~pages/getTable'));
 
 export const routes: IRoutes[] = [
-
+  {
+    path: '/',
+    elements: GetTable,
+  }
 ];
 
-export const routesRedirect: IRoutesRedirect[] = [
+// доступные страницы после получения данных
+export const allRoutes: IRoutes[] = [
 
 ];

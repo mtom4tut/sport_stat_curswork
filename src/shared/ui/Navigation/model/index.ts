@@ -1,12 +1,5 @@
 import { INavItem } from './types';
 
-export const navigationItems: INavItem[] = [
-  {
-    text: 'Лиги',
-    path: '/leagues',
-  },
-  {
-    text: 'Команды',
-    path: '/commands',
-  },
+export const NAVIGATION_ITEMS: INavItem[] = [
+
 ];

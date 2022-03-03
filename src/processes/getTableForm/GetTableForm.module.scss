@@ -1,0 +1,21 @@
+.form {
+  padding: 20px 30px;
+  border: 1px solid $border-color-accent;
+  border-radius: 14px;
+
+  & &__item {
+    display: flex;
+    width: 100%;
+    text-align: start;
+
+    &-space {
+      display: block;
+      width: 100%;
+    }
+  }
+
+  & &__submit {
+    display: block;
+    margin-left: auto;
+  }
+}
