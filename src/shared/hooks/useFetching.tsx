@@ -1,5 +1,15 @@
 import { useState } from 'react';
 
+/**
+ * Хук useFetching выполняет обработку переданной в него callback фунции
+ *
+ * @params {Function} - callback функция
+ *
+ * @returns {Array} массив состоящий из:
+ * - fetching - функция обработчик
+ * - isLoading - статус выполнения
+ * - error - список ошибок
+ */
 export const useFetching = (
   callback: () => void
 ): [fetching: () => Promise<void>, isLoading: boolean, error: string] => {
@@ -8,6 +18,7 @@ export const useFetching = (
 
   const fetching = async () => {
     try {
+      setError('');
       setIsLoading(true);
       await callback();
     } catch (err: unknown) {

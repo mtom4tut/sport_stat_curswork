@@ -2,12 +2,12 @@ import { lazy } from 'react';
 import { IRoutes } from './types';
 
 // Pages
-const GetTable = lazy(() => import('~pages/getTable'));
+const AddTable = lazy(() => import('~pages/addTable'));
 
 export const routes: IRoutes[] = [
   {
     path: '/',
-    elements: GetTable,
+    elements: AddTable,
   }
 ];
 

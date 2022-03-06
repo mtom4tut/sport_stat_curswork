@@ -1,7 +1,22 @@
 .form {
+  width: 100%;
+  max-width: 560px;
   padding: 20px 30px;
   border: 1px solid $border-color-accent;
   border-radius: 14px;
+  margin-top: -15vh;
+
+  @include mediaMax($mobile) {
+    padding: 10px 15px;
+  }
+
+  & &__title {
+    margin-bottom: 20px;
+    
+    @include mediaMax($mobile) {
+      font-size: 24px;
+    }
+  }
 
   & &__item {
     display: flex;
@@ -17,5 +32,6 @@
   & &__submit {
     display: block;
     margin-left: auto;
+    margin-top: 5px;
   }
 }

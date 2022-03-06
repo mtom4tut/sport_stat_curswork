@@ -6,6 +6,7 @@
 - Препроцессор [sass](https://sass-lang.com/documentation)
 - Библиотека пользовательского интерфейса [antd](https://ant.design/docs/react/introduce)
 - [axios](https://axios-http.com/docs/intro)
+- [effector](https://effector.dev/ru/)
 
 ## Команды:
 

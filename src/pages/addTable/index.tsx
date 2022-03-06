@@ -2,18 +2,18 @@ import { FC } from 'react';
 
 // Components
 import { Container } from '~shared/layout/Container';
-import GetTableForm from '~processes/getTableForm/GetTableForm';
+import { AddTableForm } from '~features/addTableForm';
 
 // Styles
 import cl from 'classnames';
-import styles from './getTable.module.scss';
+import styles from './addTable.module.scss';
 
-const GetTable: FC = () => {
+const AddTable: FC = () => {
   return (
     <Container className={cl(styles['get-table'])}>
-      <GetTableForm />
+      <AddTableForm />
     </Container>
   );
 };
 
-export default GetTable;
+export default AddTable;
