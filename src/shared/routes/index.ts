@@ -3,15 +3,15 @@ import { IRoutes } from './types';
 
 // Pages
 const AddTable = lazy(() => import('~pages/addTable'));
+const Tables = lazy(() => import('~pages/tables'));
 
 export const routes: IRoutes[] = [
   {
     path: '/',
     elements: AddTable,
-  }
-];
-
-// доступные страницы после получения данных
-export const allRoutes: IRoutes[] = [
-
+  },
+  {
+    path: '/tables',
+    elements: Tables,
+  },
 ];

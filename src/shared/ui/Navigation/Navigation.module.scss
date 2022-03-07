@@ -5,10 +5,15 @@
     display: flex;
     list-style: none;
     padding: 0;
+    margin: 0;
   }
 
   li {
     margin-right: 24px;
+
+    @include mediaMax($mobile) {
+      margin-right: 16px;
+    }
   }
 
   &__item {
@@ -24,6 +29,7 @@
     }
 
     @include mediaMax($mobile) {
+      font-size: 14px;
       margin-right: 14px;
     }
 

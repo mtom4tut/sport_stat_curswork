@@ -12,7 +12,6 @@ import { AddTableFormProps, IDataTable, IForm } from './model/types';
 // Components
 import Title from 'antd/lib/typography/Title';
 import { Button, Input, Form, Space } from 'antd';
-import { MyMessage } from '~shared/ui/MyMessage';
 
 // Hooks
 import { useFetching } from '~shared/hooks/useFetching';
@@ -20,7 +19,6 @@ import { useFetching } from '~shared/hooks/useFetching';
 // Styles
 import cl from 'classnames';
 import styles from './AddTableForm.module.scss';
-import { $storeTables } from '~processes/getTable/model/store';
 
 export const AddTableForm: FC<AddTableFormProps> = ({ className, titleLevel = 1 }) => {
   const formInputs = { tableId: '' }; // Инициализация полей формы
@@ -37,9 +35,7 @@ export const AddTableForm: FC<AddTableFormProps> = ({ className, titleLevel = 1 
   // callback функция
   async function fetching() {
     const data = await getTableLists<IDataTable>(valueInputs.tableId, ['Спортсмен', 'Ноги', 'Плечевой пояс']); // получаем данные
-
     addTableEvent(data); // добавить данные в store
-
     document.forms.namedItem('addDataTableForm')?.reset(); // сброс формы
   }
 

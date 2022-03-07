@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { routes, allRoutes } from '~shared/routes';
+import { routes } from '~shared/routes';
 
 // Components
 import { getLayout } from '~shared/layout/MainLayout';

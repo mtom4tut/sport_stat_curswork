@@ -1,0 +1,39 @@
+.list-item {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+
+  list-style: none;
+  padding: 10px 20px;
+
+  border: 1px solid $border-color-accent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform .2s;
+
+  &:active {
+    transform: scale(.99);
+  }
+
+  @include mediaMax($mobile) {
+    padding: 10px 15px;
+  }
+
+  &__id {
+    margin-right: 20px;
+    white-space: nowrap;
+    display: flex;
+
+    & span:last-child {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-width: 50vw;
+      flex: 0 1 auto;
+    }
+
+    @include mediaMax($mobile) {
+      margin-right: 0;
+    }
+  }
+}
