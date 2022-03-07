@@ -1,57 +1,54 @@
 import { FC, useMemo, useState } from 'react';
 
+// API
+import { getTableLists } from '~processes/getTable/api';
+
+// Events
+import { addTableEvent } from '~processes/getTable/model/event';
+
 // Config
-import { IForm } from './model/types';
+import { AddTableFormProps, IDataTable, IForm } from './model/types';
 
 // Components
 import Title from 'antd/lib/typography/Title';
-import { Button, Input, Form, Space, notification } from 'antd';
+import { Button, Input, Form, Space } from 'antd';
+import { MyMessage } from '~shared/ui/MyMessage';
 
 // Hooks
+import { useFetching } from '~shared/hooks/useFetching';
 
 // Styles
 import cl from 'classnames';
 import styles from './AddTableForm.module.scss';
-import { getTableList } from '~processes/getTable/api';
-import { useFetching } from '~shared/hooks/useFetching';
-
-interface AddTableFormProps {
-  className?: string;
-  titleLevel?: 1 | 2 | 3 | 4 | 5;
-}
+import { $storeTables } from '~processes/getTable/model/store';
 
 export const AddTableForm: FC<AddTableFormProps> = ({ className, titleLevel = 1 }) => {
-  const [valueInputs, setValueInputs] = useState<IForm>({ tableId: '' });
+  const formInputs = { tableId: '' }; // Инициализация полей формы
+
+  const [valueInputs, setValueInputs] = useState<IForm>(formInputs); // State формы
 
   // сработает по событию submit если форма заполнена без ошибок
   function onFinish(values: IForm) {
     setValueInputs({ ...valueInputs, tableId: values.tableId });
   }
 
-  // Хук для обработки API запроса
-  const [fetchTabel, isLoading, errorTabel] = useFetching(fetching);
+  const [fetchTable, isLoading] = useFetching(fetching); // Хук для обработки API запроса
 
   // callback функция
   async function fetching() {
-    const dataLegs = await getTableList(valueInputs.tableId, 'Ноги');
+    const data = await getTableLists<IDataTable>(valueInputs.tableId, ['Спортсмен', 'Ноги', 'Плечевой пояс']); // получаем данные
+
+    addTableEvent(data); // добавить данные в store
+
+    document.forms.namedItem('addDataTableForm')?.reset(); // сброс формы
   }
 
   // вызов функции для обработки API
   useMemo(() => {
     if (valueInputs.tableId) {
-      fetchTabel();
+      fetchTable();
     }
   }, [valueInputs]);
-
-  // Окно с собщение об ошибке
-  useMemo(() => {
-    if (errorTabel) {
-      notification['error']({
-        message: `Ошибка`,
-        description: errorTabel,
-      });
-    }
-  }, [errorTabel]);
 
   return (
     <Form name='addDataTableForm' className={cl(className, styles['form'])} onFinish={onFinish} autoComplete='off'>
@@ -61,6 +58,7 @@ export const AddTableForm: FC<AddTableFormProps> = ({ className, titleLevel = 1 
 
       <Form.Item
         name='tableId'
+        className={cl(styles['form__item'])}
         rules={[
           {
             validator: async (_, value) => {
@@ -72,10 +70,9 @@ export const AddTableForm: FC<AddTableFormProps> = ({ className, titleLevel = 1 
             },
           },
         ]}
-        className={cl(styles['form__item'])}
       >
         <Space className={cl(styles['form__item-space'])}>
-          <Input placeholder='Введите id таблицы' size='large' />
+          <Input name='spreadsheetId' placeholder='Введите id таблицы' size='large' />
         </Space>
       </Form.Item>
 

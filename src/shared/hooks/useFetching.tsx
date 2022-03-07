@@ -1,5 +1,8 @@
 import { useState } from 'react';
 
+// Components
+import { MyMessage } from '~shared/ui/MyMessage';
+
 /**
  * Хук useFetching выполняет обработку переданной в него callback фунции
  *
@@ -24,6 +27,7 @@ export const useFetching = (
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);
+        MyMessage('error', 'Ошибка', err.message);
       }
     } finally {
       setIsLoading(false);

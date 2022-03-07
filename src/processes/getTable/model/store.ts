@@ -1,3 +1,11 @@
-import { createStore } from "effector";
+import { createStore } from 'effector';
 
-const $tables = createStore([])
+// Config
+import { IDataTable } from '~features/addTableForm/model/types';
+
+// Event
+import { add, addTableEvent } from './event';
+
+export const $storeTables = createStore<IDataTable[]>([]).on(addTableEvent, (state, data: IDataTable) => {
+  add(state, data);
+});
