@@ -9,6 +9,8 @@ import styles from './TableContent.module.scss';
 
 // Components
 import { Tabs } from 'antd';
+import { Table } from '~entities/Table';
+import { TableTotal } from '~entities/TableTotal';
 const { TabPane } = Tabs;
 
 interface TableListProps {
@@ -23,15 +25,15 @@ export const TableContent: FC<TableListProps> = ({ className, data }) => {
 
   return (
     <div className={cl(className, styles['table-content'])}>
-      <Tabs defaultActiveKey='1'>
+      <Tabs defaultActiveKey='0'>
         {data.valueRanges.map((item, index) => (
           <TabPane tab={parseNameTable(item.range)} key={index}>
-            Content of Tab Pane 1
+            <Table data={item.values} />
           </TabPane>
         ))}
 
         <TabPane tab='Итоги' key='99999'>
-            Content of Tab Pane 1
+          <TableTotal data={data} />
         </TabPane>
       </Tabs>
     </div>

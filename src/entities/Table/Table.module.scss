@@ -1,0 +1,23 @@
+.table {
+  padding-bottom: 15px;
+  overflow-x: auto;
+
+  &__row {
+    display: flex;
+    border-bottom: 2px solid rgba($border-color-default, .5);
+
+    &:first-child {
+      font-weight: 700;
+    }
+  }
+
+  &__col {
+    width: -webkit-fill-available;
+    min-width: 100px;
+    padding: 0 5px;
+
+    & + & {
+      border-left: 2px solid rgba($border-color-default, .5);
+    }
+  }
+}
