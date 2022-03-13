@@ -1,4 +1,23 @@
 .table-total {
   padding-bottom: 15px;
   overflow-x: auto;
+
+  &__title {
+    text-align: start;
+  }
+
+  &__item {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: start;
+    gap: 10px;
+    align-items: center;
+
+    padding: 5px;
+
+    &--accent {
+      border: 1px solid $border-color-default;
+      background-color: rgba($border-color-accent, .3);
+    }
+  }
 }
