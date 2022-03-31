@@ -5,7 +5,7 @@ import { IDataTable } from '~features/addTableForm/model/types';
 import { getTableLists } from '../api';
 
 // Event
-import { add, addTableEvent } from './event';
+import { add, addTableEvent, removeTableEvent, remove } from './event';
 
 function fetching() {
   let dataArr: IDataTable[] = [];
@@ -25,7 +25,10 @@ function fetching() {
 
 const initStore = fetching();
 
-
-export const $storeTables = createStore<IDataTable[]>(initStore).on(addTableEvent, (state, data: IDataTable) => {
-  add(state, data);
-});
+export const $storeTables = createStore<IDataTable[]>(initStore)
+  .on(addTableEvent, (state, data: IDataTable) => {
+    return add(state, data);
+  })
+  .on(removeTableEvent, (state, spreadsheetId: string) => {
+    return remove(state, spreadsheetId);
+  });

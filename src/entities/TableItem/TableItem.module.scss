@@ -1,6 +1,7 @@
 .list-item {
   display: flex;
   justify-content: space-around;
+  align-items: center;
   flex-wrap: wrap;
 
   list-style: none;
@@ -9,13 +10,9 @@
   border: 1px solid $border-color-accent;
   border-radius: 8px;
   cursor: pointer;
-  transition: transform .2s;
-
-  &:active {
-    transform: scale(.99);
-  }
 
   @include mediaMax($mobile) {
+    flex-direction: column;
     padding: 10px 15px;
   }
 

@@ -21,6 +21,7 @@ import styles from './TablesId.module.scss';
 const TablesId: FC = () => {
   const { id = '' } = useParams<{ id: string }>();
   const tables = useStore($storeTables);
+
   const data = tables.find(item => item.spreadsheetId === id);
 
   const BREADCRUMBS: IBreadcrumb[] = [

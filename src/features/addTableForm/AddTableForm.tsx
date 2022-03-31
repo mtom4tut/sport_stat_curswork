@@ -36,12 +36,7 @@ export const AddTableForm: FC<AddTableFormProps> = ({ className, titleLevel = 1 
   async function fetching() {
     const data = await getTableLists<IDataTable>(valueInputs.tableId, ['Спортсмен', 'Ноги', 'Плечевой пояс']); // получаем данные
     addTableEvent(data); // добавить данные в store
-
-    // добавить данные в localstore
-    let tableId: string[] = localStorage.getItem('tableId') ? JSON.parse(localStorage.getItem('tableId')!) : [];
-    tableId.push(valueInputs.tableId);
-    localStorage.setItem('tableId', JSON.stringify(tableId));
-
+    
     document.forms.namedItem('addDataTableForm')?.reset(); // сброс формы
   }
 
