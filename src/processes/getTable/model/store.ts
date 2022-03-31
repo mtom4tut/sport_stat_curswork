@@ -1,4 +1,3 @@
-import { useStore } from 'effector-react';
 import { createStore } from 'effector';
 
 // Config
