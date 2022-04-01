@@ -1,3 +1,5 @@
+import { IDataTable } from '~features/addTableForm/model/types';
+
 export function timeSeconds(stage: string[] | undefined) {
   const timeStage: string[] | undefined = stage?.at(0)?.split(/:|,/);
   let legsTimeFirst;
@@ -17,9 +19,9 @@ export function filteredTable(arr: any[], tableName: string) {
 }
 
 export function powerOfTheStage(arr: string[]) {
-  let penultimateStageNum: string | number | undefined = arr?.at(6)?.replace(',', '.');
-  penultimateStageNum = penultimateStageNum ? parseFloat(penultimateStageNum) : 0;
-  return penultimateStageNum;
+  let stageNum: string | number | undefined = arr?.at(6)?.replace(',', '.');
+  stageNum = stageNum ? parseFloat(stageNum) : 0;
+  return stageNum;
 }
 
 export function timeInterval(start: string[], end: string[]) {
@@ -30,14 +32,36 @@ export function timeInterval(start: string[], end: string[]) {
   return diffTime;
 }
 
-export function powerTotal(penultimateStageNum: number, penultimateStageLastNum: number, diffTime: number | 'Нет данных', startTime: number | undefined) {
-  let legsTotal: number | string = 'Нет данных';
+export function powerTotal(
+  stageNum: number,
+  stageLastNum: number,
+  diffTime: number | 'Нет данных',
+  startTime: number | undefined
+) {
+  let legsTotal: number | 'Нет данных' = 'Нет данных';
 
-  if (penultimateStageNum && penultimateStageLastNum && startTime && diffTime !== 'Нет данных') {
-    legsTotal =
-    penultimateStageNum +
-      ((penultimateStageLastNum - penultimateStageNum) * diffTime) / startTime;
+  if (stageNum && stageLastNum && startTime && diffTime !== 'Нет данных') {
+    legsTotal = stageNum + ((stageLastNum - stageNum) * diffTime) / startTime;
   }
 
-  return legsTotal
+  return legsTotal;
+}
+
+export function sportsmenWeight(data: IDataTable['valueRanges']) {
+  const sportsmenData: string[] | undefined = data.find(item => item.range === "'Спортсмен'!A1:Z1000")?.values.at(1);
+  const sportsmenWeight = sportsmenData ? parseFloat(sportsmenData[4]) : -1;
+
+  return sportsmenWeight;
+}
+
+export function YOC(dataList: string[][], sportsmenWeight: number) {
+  const legsYOC = dataList.map((item: string[]) => {
+    const power = parseFloat(item[6]);
+    const frequency = parseFloat(item[5]);
+    const YOC = ((power + 0.3 * sportsmenWeight) * 100) / (frequency * 3.75 * (Math.pow(frequency / 190, 0.2) - 0.69));
+
+    return [...item.slice(5, 7), YOC.toFixed(2)];
+  });
+
+  return legsYOC;
 }

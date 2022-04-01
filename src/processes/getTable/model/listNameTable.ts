@@ -1,0 +1,1 @@
+export const listNameTable: string[] = ['Спортсмен', 'Ноги', 'Плечевой пояс'];

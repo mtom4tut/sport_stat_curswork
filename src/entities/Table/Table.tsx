@@ -6,7 +6,7 @@ import styles from './Table.module.scss';
 
 interface TableProps {
   className?: string;
-  data: [][];
+  data: string[][];
 }
 
 export const Table: FC<TableProps> = ({ className, data }) => {

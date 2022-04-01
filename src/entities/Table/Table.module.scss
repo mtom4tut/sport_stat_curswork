@@ -1,5 +1,13 @@
 .table {
   overflow-x: auto;
+  &::-webkit-scrollbar {
+    height: 5px;
+    background-color: rgba($background-color-basic, 0.1);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $background-color-accent;
+  }
 
   &__row {
     display: flex;

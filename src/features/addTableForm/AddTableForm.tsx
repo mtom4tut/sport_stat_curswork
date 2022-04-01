@@ -8,6 +8,7 @@ import { addTableEvent } from '~processes/getTable/model/event';
 
 // Config
 import { AddTableFormProps, IDataTable, IForm } from './model/types';
+import { listNameTable } from '~processes/getTable/model/listNameTable';
 
 // Components
 import Title from 'antd/lib/typography/Title';
@@ -34,9 +35,9 @@ export const AddTableForm: FC<AddTableFormProps> = ({ className, titleLevel = 1 
 
   // callback функция
   async function fetching() {
-    const data = await getTableLists<IDataTable>(valueInputs.tableId, ['Спортсмен', 'Ноги', 'Плечевой пояс']); // получаем данные
+    const data = await getTableLists<IDataTable>(valueInputs.tableId, listNameTable); // получаем данные
     addTableEvent(data); // добавить данные в store
-    
+
     document.forms.namedItem('addDataTableForm')?.reset(); // сброс формы
   }
 

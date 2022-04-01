@@ -1,6 +1,7 @@
 import { createStore } from 'effector';
 
 // Config
+import { listNameTable } from '~processes/getTable/model/listNameTable';
 import { IDataTable } from '~features/addTableForm/model/types';
 import { getTableLists } from '../api';
 
@@ -15,7 +16,7 @@ function fetching() {
     const tableId: string[] = JSON.parse(localStorage.getItem('tableId')!);
 
     tableId.map(async id => {
-      const data = await getTableLists<IDataTable>(id, ['Спортсмен', 'Ноги', 'Плечевой пояс']);
+      const data = await getTableLists<IDataTable>(id, listNameTable);
       await dataArr.push(data);
     });
   }

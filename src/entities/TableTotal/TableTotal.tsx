@@ -1,9 +1,20 @@
 import { FC } from 'react';
 
 // Components
+import { Collapse } from 'antd';
+import CollapsePanel from 'antd/lib/collapse/CollapsePanel';
+import { Table } from '~entities/Table';
 
 // Functions
-import { filteredTable, powerOfTheStage, powerTotal, timeInterval, timeSeconds } from './function/helpers';
+import {
+  filteredTable,
+  powerOfTheStage,
+  powerTotal,
+  sportsmenWeight,
+  timeInterval,
+  timeSeconds,
+  YOC,
+} from './function/helpers';
 
 // Config
 import { IDataTable } from '~features/addTableForm/model/types';
@@ -11,8 +22,6 @@ import { IDataTable } from '~features/addTableForm/model/types';
 // Styles
 import cl from 'classnames';
 import styles from './TableTotal.module.scss';
-import { Collapse } from 'antd';
-import CollapsePanel from 'antd/lib/collapse/CollapsePanel';
 
 interface TableTotalProps {
   className?: string;
@@ -61,6 +70,11 @@ export const TableTotal: FC<TableTotalProps> = ({ className, data }) => {
 
   // Мощность МПК, Вт
   let armsTotal = powerTotal(armsPenultimateStageNum, armsPenultimateStageLastNum, armsDiffTime, armsTimeFirst);
+
+  // /////////// УОС ноги
+  const weight = sportsmenWeight(data.valueRanges);
+  const legsYOC = YOC(legs, weight);
+  legsYOC.unshift(['Мощность', 'ЧСС', 'УОС']);
 
   return (
     <Collapse className={cl(className, styles['table-total'])} ghost>
@@ -119,6 +133,9 @@ export const TableTotal: FC<TableTotalProps> = ({ className, data }) => {
             <dd>{armsTotal}</dd>
           </div>
         </dl>
+      </CollapsePanel>
+      <CollapsePanel header='УОС Ноги' key='3'>
+        <Table data={legsYOC} />
       </CollapsePanel>
     </Collapse>
   );
