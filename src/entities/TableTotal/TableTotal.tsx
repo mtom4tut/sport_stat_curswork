@@ -71,10 +71,15 @@ export const TableTotal: FC<TableTotalProps> = ({ className, data }) => {
   // Мощность МПК, Вт
   let armsTotal = powerTotal(armsPenultimateStageNum, armsPenultimateStageLastNum, armsDiffTime, armsTimeFirst);
 
+  const weight = sportsmenWeight(data.valueRanges); // вес спортсмена
+
   // /////////// УОС ноги
-  const weight = sportsmenWeight(data.valueRanges);
   const legsYOC = YOC(legs, weight);
-  legsYOC.unshift(['Мощность', 'ЧСС', 'УОС']);
+  legsYOC.unshift(['ЧСС', 'Мощность', 'УОС']);
+
+  // /////////// УОС плечевой пояс
+  const armsYOC = YOC(arms, weight);
+  armsYOC.unshift(['ЧСС', 'Мощность', 'УОС']);
 
   return (
     <Collapse className={cl(className, styles['table-total'])} ghost>
@@ -136,6 +141,9 @@ export const TableTotal: FC<TableTotalProps> = ({ className, data }) => {
       </CollapsePanel>
       <CollapsePanel header='УОС Ноги' key='3'>
         <Table data={legsYOC} />
+      </CollapsePanel>
+      <CollapsePanel header='УОС Плечевой пояс' key='4'>
+        <Table data={armsYOC} />
       </CollapsePanel>
     </Collapse>
   );

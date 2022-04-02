@@ -1,32 +1,14 @@
-import { createStore } from 'effector';
+import { createStore, createEffect } from 'effector';
 
 // Config
-import { listNameTable } from '~processes/getTable/model/listNameTable';
 import { IDataTable } from '~features/addTableForm/model/types';
-import { getTableLists } from '../api';
 
 // Event
-import { add, addTableEvent, removeTableEvent, remove } from './event';
+import { add, addTableEvent } from './events/add';
+import { initStore } from '../config/initStore';
+import { removeTableEvent, remove } from './events/remove';
 
-function fetching() {
-  let dataArr: IDataTable[] = [];
-
-  // получаем данные из lockalstorage
-  if (localStorage.getItem('tableId')) {
-    const tableId: string[] = JSON.parse(localStorage.getItem('tableId')!);
-
-    tableId.map(async id => {
-      const data = await getTableLists<IDataTable>(id, listNameTable);
-      await dataArr.push(data);
-    });
-  }
-
-  return dataArr;
-}
-
-const initStore = fetching();
-
-export const $storeTables = createStore<IDataTable[]>(initStore)
+export const $storeTables = createStore<IDataTable[]>(initStore())
   .on(addTableEvent, (state, data: IDataTable) => {
     return add(state, data);
   })

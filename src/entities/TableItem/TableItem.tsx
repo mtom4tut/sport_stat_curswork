@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router';
 import cl from 'classnames';
 import styles from './TableItem.module.scss';
 import { Button } from 'antd';
-import { removeTableEvent } from '~processes/getTable/model/event';
+import { removeTableEvent } from '~processes/getTable/model/events/remove';
 
 interface TableItemProps {
   className?: string;

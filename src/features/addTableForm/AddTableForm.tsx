@@ -4,7 +4,7 @@ import { FC, useMemo, useState } from 'react';
 import { getTableLists } from '~processes/getTable/api';
 
 // Events
-import { addTableEvent } from '~processes/getTable/model/event';
+import { addTableEvent } from '~processes/getTable/model/events/add';
 
 // Config
 import { AddTableFormProps, IDataTable, IForm } from './model/types';
