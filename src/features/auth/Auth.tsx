@@ -5,19 +5,22 @@ import cl from 'classnames';
 import styles from './Auth.module.scss';
 
 // Components
-import { Button, Form, Input, Modal, Tabs } from 'antd';
-const { TabPane } = Tabs;
+import { Button, Form, Menu, Modal } from 'antd';
+
+// Interface
+import { IForm } from './interface/IForm';
+import { AuthLogin } from './ui/AuthLogin';
+import { AuthPassword } from './ui/AuthPassword';
+import { AuthMenu } from './ui/AuthMenu';
 
 interface AuthProps {
   className?: string;
 }
 
 export const Auth: FC<AuthProps> = ({ className }) => {
+  const formInputs: IForm = { login: '', password: '', passwordCheck: '' }; // Инициализация полей формы
+  const [valueInputs, setValueInputs] = useState<IForm>(formInputs); // State формы
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
 
   const handleCancel = () => {
     setIsModalVisible(false);
@@ -25,25 +28,35 @@ export const Auth: FC<AuthProps> = ({ className }) => {
     document.forms.namedItem('authForm')?.reset(); // сброс формы
   };
 
+  const onFinish = () => {
+    setIsModalVisible(false);
+
+    document.forms.namedItem('authForm')?.reset(); // сброс формы
+  };
+
   return (
     <div className={cl(className, styles['auth'])}>
-      <Button onClick={showModal}>Войти</Button>
+      <Button onClick={() => setIsModalVisible(true)}>Войти</Button>
       {/* <Button>Выйти</Button> */}
+      {/* isModalVisible */}
+      <Modal visible={true} onCancel={handleCancel} footer={null}>
+        <AuthMenu />
 
-      <Modal visible={isModalVisible} onCancel={handleCancel} footer={null}>
-        <Form name='authForm' action='/php/auth.php' method='post'>
-          <Tabs defaultActiveKey='1'>
-            <TabPane tab='Вход' key='1'>
-              <Input className={cl(styles['auth__input'])} placeholder='Введите логин' />
-              <Input.Password className={cl(styles['auth__input'])} placeholder='Введите пароль' />
-            </TabPane>
+        <Form
+          name='authForm'
+          className={cl(className, styles['auth__form'])}
+          action='/php/auth.php'
+          method='post'
+          autoComplete='off'
+          onFinish={onFinish}
+        >
+          <AuthLogin className={cl(styles['auth__input'])} />
 
-            <TabPane tab='Регистрация' key='2'>
-              <Input className={cl(styles['auth__input'])} placeholder='Введите логин' />
-              <Input.Password className={cl(styles['auth__input'])} placeholder='Введите пароль' />
-              <Input.Password className={cl(styles['auth__input'])} placeholder='Подтвердите пароль' />
-            </TabPane>
-          </Tabs>
+          <AuthPassword className={cl(styles['auth__input'])} />
+
+          <Button className={cl(styles['auth__submit'])} type='primary' size='large' htmlType='submit'>
+            Войти
+          </Button>
         </Form>
       </Modal>
     </div>

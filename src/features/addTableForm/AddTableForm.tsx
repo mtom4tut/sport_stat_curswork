@@ -22,7 +22,7 @@ import cl from 'classnames';
 import styles from './AddTableForm.module.scss';
 
 export const AddTableForm: FC<AddTableFormProps> = ({ className, titleLevel = 1 }) => {
-  const formInputs = { tableId: '' }; // Инициализация полей формы
+  const formInputs: IForm = { tableId: '' }; // Инициализация полей формы
 
   const [valueInputs, setValueInputs] = useState<IForm>(formInputs); // State формы
 
@@ -69,7 +69,7 @@ export const AddTableForm: FC<AddTableFormProps> = ({ className, titleLevel = 1 
           },
         ]}
       >
-        <Space className={cl(styles['form__item-space'])}>
+        <Space>
           <Input name='spreadsheetId' placeholder='Введите id таблицы' size='large' />
         </Space>
       </Form.Item>
