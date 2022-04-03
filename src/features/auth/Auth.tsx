@@ -28,8 +28,9 @@ export const Auth: FC<AuthProps> = ({ className }) => {
   };
 
   const [menu, setMenu] = useState<string>(DEFAULT_MENU_ITEM); // активный пункт меню
-  
+  const [isRegistration, setIsRegistration] = useState<boolean>(false);
   useEffect(() => {
+    setIsRegistration(menuItems.registration === menu);
     document.forms.namedItem('authForm')?.reset(); // сброс формы
   }, [menu]);
 
@@ -61,34 +62,27 @@ export const Auth: FC<AuthProps> = ({ className }) => {
   // }, [valueInputs]);
 
   return (
-    <div className={cl(className, styles['auth'])}>
-      <Button onClick={() => setIsModalVisible(true)}>Войти</Button>
+    <>
+      <Button className={cl(className, styles['auth'])} onClick={() => setIsModalVisible(true)}>Войти</Button>
       {/* <Button>Выйти</Button> */}
 
-      <Modal className={cl(styles['auth__modal'])} visible={isModalVisible} onCancel={handleCancel} footer={null}>
+      <Modal className={cl(styles['auth-modal'])} visible={isModalVisible} onCancel={handleCancel} footer={null}>
         <AuthMenu onClick={setMenu} />
 
-        <Form
-          name='authForm'
-          className={cl(styles['auth__modal-form'])}
-          action='/php/auth.php'
-          method='post'
-          autoComplete='off'
-          onFinish={onFinish}
-        >
-          <AuthLogin className={cl(styles['auth__modal-input'])} />
+        <Form name='authForm' className={cl(styles['auth-modal__form'])} autoComplete='off' onFinish={onFinish}>
+          <AuthLogin className={cl(styles['auth-modal__input'])} registrationMod={isRegistration} />
 
-          <AuthPassword className={cl(styles['auth__modal-input'])} registrationMod={menuItems.registration === menu} />
+          <AuthPassword className={cl(styles['auth-modal__input'])} registrationMod={isRegistration} />
 
-          {menuItems.registration === menu && (
-            <AuthPassword className={cl(styles['auth__modal-input'])} registrationMod={true} name='authPasswordCheck' />
+          {isRegistration && (
+            <AuthPassword className={cl(styles['auth-modal__input'])} registrationMod={true} name='authPasswordCheck' />
           )}
 
-          <Button className={cl(styles['auth__modal-submit'])} type='primary' size='large' htmlType='submit'>
-            {menuItems.registration === menu ? 'Зарегистрироваться' : 'Войти'}
+          <Button className={cl(styles['auth-modal__submit'])} type='primary' size='large' htmlType='submit'>
+            {isRegistration ? 'Зарегистрироваться' : 'Войти'}
           </Button>
         </Form>
       </Modal>
-    </div>
+    </>
   );
 };

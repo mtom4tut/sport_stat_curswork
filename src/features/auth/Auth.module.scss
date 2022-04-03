@@ -1,12 +1,12 @@
 .auth {
-  &__modal {
-    &-input {
-      & + .auth__modal-input {
+  &-modal {
+    &__input {
+      & + .auth-modal__input {
         margin-top: 15px;
       }
     }
 
-    & &-submit {
+    & &__submit {
       display: block;
       margin-top: 20px;
       margin-left: auto;
