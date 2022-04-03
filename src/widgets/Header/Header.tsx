@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { Link } from 'react-router-dom';
 
 // Config
 import { NAVIGATION_ITEMS } from '~shared/ui/Navigation/model';
@@ -6,7 +7,8 @@ import { NAVIGATION_ITEMS } from '~shared/ui/Navigation/model';
 // Components
 import { Container } from '~shared/layout/Container';
 import Navigation from '~shared/ui/Navigation/Navigation';
-import { Link } from 'react-router-dom';
+import { Auth } from '~features/auth';
+
 
 // Styles
 import cl from 'classnames';
@@ -24,6 +26,8 @@ export const Header: FC<HeaderProps> = ({ className }) => {
           <img src={require('~assets/img/logo.png')} alt='logo' />
         </Link>
         <Navigation navigationItems={NAVIGATION_ITEMS} />
+
+        <Auth className={cl(styles['header__auth'])} />
       </Container>
     </header>
   );

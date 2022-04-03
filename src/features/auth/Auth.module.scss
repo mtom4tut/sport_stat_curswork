@@ -1,0 +1,7 @@
+.auth {
+  &__input {
+    & + .auth__input {
+      margin-top: 15px;
+    }
+  }
+}

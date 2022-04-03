@@ -21,7 +21,8 @@ img {
 }
 
 body {
-  overflow-y: scroll;
+  width: 100% !important;
+  overflow-y: scroll !important;
   // padding-right: calc(10px - (100vw - 100%));
   &::-webkit-scrollbar {
     width: 10px;
