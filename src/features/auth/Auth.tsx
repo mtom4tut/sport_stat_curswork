@@ -5,13 +5,15 @@ import cl from 'classnames';
 import styles from './Auth.module.scss';
 
 // Components
-import { Button, Form, Menu, Modal } from 'antd';
+import { Button, Form, Modal } from 'antd';
+import { AuthLogin } from './ui/AuthLogin';
+import { AuthPassword } from './ui/AuthPassword';
+import { AuthMenu, DEFAULT_MENU_ITEM, menuItems } from './ui/AuthMenu';
+
+// Config
 
 // Interface
 import { IForm } from './interface/IForm';
-import { AuthLogin } from './ui/AuthLogin';
-import { AuthPassword } from './ui/AuthPassword';
-import { AuthMenu } from './ui/AuthMenu';
 
 interface AuthProps {
   className?: string;
@@ -20,7 +22,10 @@ interface AuthProps {
 export const Auth: FC<AuthProps> = ({ className }) => {
   const formInputs: IForm = { login: '', password: '', passwordCheck: '' }; // Инициализация полей формы
   const [valueInputs, setValueInputs] = useState<IForm>(formInputs); // State формы
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+
+  const [menu, setMenu] = useState<string>(DEFAULT_MENU_ITEM); // активный пункт меню
+
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false); // модальное окно
 
   const handleCancel = () => {
     setIsModalVisible(false);
@@ -40,7 +45,7 @@ export const Auth: FC<AuthProps> = ({ className }) => {
       {/* <Button>Выйти</Button> */}
       {/* isModalVisible */}
       <Modal visible={true} onCancel={handleCancel} footer={null}>
-        <AuthMenu />
+        <AuthMenu onClick={setMenu} />
 
         <Form
           name='authForm'
@@ -54,8 +59,10 @@ export const Auth: FC<AuthProps> = ({ className }) => {
 
           <AuthPassword className={cl(styles['auth__input'])} />
 
+          {menuItems.registration === menu && <AuthPassword className={cl(styles['auth__input'])} />}
+
           <Button className={cl(styles['auth__submit'])} type='primary' size='large' htmlType='submit'>
-            Войти
+            {menuItems.registration === menu ? 'Зарегистрироваться' : 'Войти'}
           </Button>
         </Form>
       </Modal>

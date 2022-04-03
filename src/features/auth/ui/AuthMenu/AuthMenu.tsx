@@ -9,13 +9,15 @@ import { Menu } from 'antd';
 
 interface AuthMenuProps {
   className?: string;
+  onClick: (key: string) => void;
 }
 
-export const AuthMenu: FC<AuthMenuProps> = ({ className }) => {
+export const AuthMenu: FC<AuthMenuProps> = ({ className, onClick }) => {
   const [current, setCurrent] = useState<string>('entrance');
 
   function handleClick(key: string) {
     setCurrent(key);
+    onClick(key);
   }
 
   return (
