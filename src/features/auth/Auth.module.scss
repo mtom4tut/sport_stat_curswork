@@ -1,16 +1,15 @@
 .auth {
-  &__form {
-    text-align: end;
-  }
-
-  &__input {
-    & + .auth__input {
-      margin-top: 15px;
+  &__modal {
+    &-input {
+      & + .auth__modal-input {
+        margin-top: 15px;
+      }
     }
-  }
 
-  &__submit {
-    margin-top: 20px;
-    margin-left: auto;
+    & &-submit {
+      display: block;
+      margin-top: 20px;
+      margin-left: auto;
+    }
   }
 }
