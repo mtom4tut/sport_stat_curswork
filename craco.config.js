@@ -1,4 +1,5 @@
 const path = require('path');
+const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
 const sassResourcesLoader = require('craco-sass-resources-loader');
 
 const resolvePath = p => path.resolve(__dirname, p);
@@ -14,6 +15,7 @@ module.exports = {
       '~features': resolvePath('./src/features'),
       '~processes': resolvePath('./src/processes'),
     },
+    plugins: [new NodePolyfillPlugin()],
   },
   plugins: [
     {

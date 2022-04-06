@@ -7,6 +7,7 @@
 - Библиотека пользовательского интерфейса [antd](https://ant.design/docs/react/introduce)
 - [axios](https://axios-http.com/docs/intro)
 - [effector](https://effector.dev/ru/)
+- [react-pdf](https://react-pdf.org/)
 
 ## Команды:
 
