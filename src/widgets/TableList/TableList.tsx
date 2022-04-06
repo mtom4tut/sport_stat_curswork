@@ -7,12 +7,14 @@ import { IDataTable } from '~features/addTableForm/model/types';
 // Components
 import { TableItem } from '~entities/TableItem';
 import { Input } from 'antd';
-import { PDFDownload } from '~features/pdfDownload';
+import { PDFDownload, TablesPDF } from '~features/PDFDownload';
+
+// Utils
+import { getName } from '~shared/utils/getName';
 
 // Styles
 import cl from 'classnames';
 import styles from './TableList.module.scss';
-import { Document, Page, Text, View } from '@react-pdf/renderer';
 
 interface TableListProps {
   className?: string;
@@ -24,18 +26,7 @@ export const TableList: FC<TableListProps> = ({ className, data }) => {
 
   useMemo(() => {
     setFilterData(data);
-  }, [data])
-
-  function getName(item: IDataTable): string {
-    const elem = item.valueRanges.find(item => item.range === "'Спортсмен'!A1:Z1000");
-    const elemItem = elem?.values.find((_, index) => index === 1);
-
-    if (elemItem && elemItem[0]) {
-      return elemItem[0];
-    }
-
-    return 'Имя не распознано';
-  }
+  }, [data]);
 
   function filteredData(val: string) {
     if (val) {
@@ -49,19 +40,6 @@ export const TableList: FC<TableListProps> = ({ className, data }) => {
     }
   }
 
-  const MyDocument = () => (
-    <Document>
-      <Page size='A4'>
-        <View>
-          <Text>Section #1</Text>
-        </View>
-        <View>
-          <Text>Section #2</Text>
-        </View>
-      </Page>
-    </Document>
-  );
-
   return (
     <div>
       <div className={cl(styles['table-list-header'])}>
@@ -70,7 +48,7 @@ export const TableList: FC<TableListProps> = ({ className, data }) => {
           placeholder='Начните вводить id таблицы или ФИО спортсмена'
           onChange={e => filteredData(e.target.value)}
         />
-        <PDFDownload Template={<MyDocument />} />
+        <PDFDownload Template={<TablesPDF data={filterData} />} />
       </div>
       <ul className={cl(className, styles['table-list'])}>
         {filterData.map(item => (

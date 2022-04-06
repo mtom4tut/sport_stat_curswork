@@ -7,10 +7,14 @@ import { IDataTable } from '~features/addTableForm/model/types';
 import cl from 'classnames';
 import styles from './TableContent.module.scss';
 
+// Utils
+import { getName } from '~shared/utils/getName';
+
 // Components
 import { Tabs } from 'antd';
 import { Table } from '~entities/Table';
 import { TableTotal } from '~entities/TableTotal';
+import { PDFDownload, TablesIdPDF } from '~features/PDFDownload';
 const { TabPane } = Tabs;
 
 interface TableListProps {
@@ -20,7 +24,7 @@ interface TableListProps {
 
 export const TableContent: FC<TableListProps> = ({ className, data }) => {
   function parseNameTable(str: string): string {
-    return str.slice(1).split('\'')[0];
+    return str.slice(1).split("'")[0];
   }
 
   return (
@@ -36,6 +40,10 @@ export const TableContent: FC<TableListProps> = ({ className, data }) => {
           <TableTotal data={data} />
         </TabPane>
       </Tabs>
+
+      <div className={cl(styles['table-content__pdf'])}>
+        <PDFDownload Template={<TablesIdPDF data={data} />} filename={getName(data).replace(' ', '_')} />
+      </div>
     </div>
   );
 };

@@ -1,4 +1,11 @@
 .table-content {
+  position: relative;
   margin-top: 10px;
   padding-bottom: 30px;
+
+  &__pdf {
+    position: absolute;
+    top: 5px;
+    right: 0;
+  }
 }

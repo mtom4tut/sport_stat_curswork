@@ -15,9 +15,13 @@
 
     padding: 5px;
 
+    @include mediaMax($mobile) {
+      grid-template-columns: 3fr 1fr;
+    }
+
     &--accent {
       border: 1px solid $border-color-default;
-      background-color: rgba($border-color-accent, .3);
+      background-color: rgba($border-color-accent, 0.3);
     }
   }
 }
