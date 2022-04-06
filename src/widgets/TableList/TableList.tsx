@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { useState } from 'react';
 
 // Config
 import { IDataTable } from '~features/addTableForm/model/types';
@@ -6,11 +7,12 @@ import { IDataTable } from '~features/addTableForm/model/types';
 // Components
 import { TableItem } from '~entities/TableItem';
 import { Input } from 'antd';
+import { PDFDownload } from '~features/pdfDownload';
 
 // Styles
 import cl from 'classnames';
 import styles from './TableList.module.scss';
-import { useState } from 'react';
+import { Document, Page, Text, View } from '@react-pdf/renderer';
 
 interface TableListProps {
   className?: string;
@@ -43,9 +45,29 @@ export const TableList: FC<TableListProps> = ({ className, data }) => {
     }
   }
 
+  const MyDocument = () => (
+    <Document>
+      <Page size='A4'>
+        <View>
+          <Text>Section #1</Text>
+        </View>
+        <View>
+          <Text>Section #2</Text>
+        </View>
+      </Page>
+    </Document>
+  );
+
   return (
     <div>
-      <Input allowClear placeholder='Начните вводить id таблицы или ФИО спортсмена' onChange={e => filteredData(e.target.value)} />
+      <div className={cl(styles['table-list-header'])}>
+        <Input
+          allowClear
+          placeholder='Начните вводить id таблицы или ФИО спортсмена'
+          onChange={e => filteredData(e.target.value)}
+        />
+        <PDFDownload Template={<MyDocument />} />
+      </div>
       <ul className={cl(className, styles['table-list'])}>
         {filterData.map(item => (
           <TableItem key={item.spreadsheetId} id={item.spreadsheetId} name={getName(item)} />

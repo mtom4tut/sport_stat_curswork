@@ -1,0 +1,14 @@
+.pdf-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  margin-left: auto;
+
+  svg {
+    fill: $text-color-basic;
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+  }
+}
