@@ -12,6 +12,10 @@
       @include mediaMax($mobile) {
         margin-right: 18px;
       }
+
+      @include mediaMax($mobile-sm) {
+        margin-right: 0;
+      }
     }
   }
 

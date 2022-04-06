@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { useState } from 'react';
 
 // Config
@@ -21,6 +21,10 @@ interface TableListProps {
 
 export const TableList: FC<TableListProps> = ({ className, data }) => {
   const [filterData, setFilterData] = useState<IDataTable[]>(data);
+
+  useMemo(() => {
+    setFilterData(data);
+  }, [data])
 
   function getName(item: IDataTable): string {
     const elem = item.valueRanges.find(item => item.range === "'Спортсмен'!A1:Z1000");

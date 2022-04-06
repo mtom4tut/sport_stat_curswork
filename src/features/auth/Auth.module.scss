@@ -1,4 +1,41 @@
 .auth {
+  display: flex !important;
+  align-items: center;
+
+  @include mediaMax($mobile-sm) {
+    padding-left: 5px !important;
+    padding-right: 6px !important;
+  }
+
+  svg {
+    width: 20px;
+    margin-right: 10px;
+    transition: fill 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+
+    @include mediaMax($mobile-sm) {
+      margin-right: 0;
+    }
+  }
+
+  &:hover,
+  &:focus {
+    svg {
+      fill: #40a9ff;
+    }
+  }
+
+  &:active {
+    svg {
+      fill: #096dd9;
+    }
+  }
+
+  & &-text {
+    @include mediaMax($mobile-sm) {
+      display: none;
+    }
+  }
+
   &-modal {
     &__input {
       & + .auth-modal__input {

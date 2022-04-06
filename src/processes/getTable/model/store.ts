@@ -9,9 +9,5 @@ import { initStore } from '../config/initStore';
 import { removeTableEvent, remove } from './events/remove';
 
 export const $storeTables = createStore<IDataTable[]>(initStore())
-  .on(addTableEvent, (state, data: IDataTable) => {
-    return add(state, data);
-  })
-  .on(removeTableEvent, (state, spreadsheetId: string) => {
-    return remove(state, spreadsheetId);
-  });
+  .on(addTableEvent, (state, data: IDataTable) => add(state, data))
+  .on(removeTableEvent, (state, spreadsheetId: string) => remove(state, spreadsheetId));
