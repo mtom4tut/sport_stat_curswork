@@ -9,6 +9,7 @@ export const styles = StyleSheet.create({
     paddingBottom: 20,
     paddingLeft: 30,
   },
+
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -19,6 +20,10 @@ export const styles = StyleSheet.create({
     width: 64,
     height: 64,
   },
+
+  view: {
+    marginBottom: 20,
+  },
   flexView: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -27,11 +32,36 @@ export const styles = StyleSheet.create({
     fontSize: 34,
     fontWeight: 700,
   },
+  titleH2: {
+    fontSize: 24,
+    fontWeight: 700,
+  },
+  titleH3: {
+    fontSize: 20,
+    fontWeight: 700,
+  },
   defaultText: {
     fontSize: 14,
     fontWeight: 400,
   },
-  view: {
-    marginBottom: 20,
+
+  table: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottom: '1px solid black',
+  },
+  tableItem: {
+    width: 170,
+    fontSize: 11,
+    fontWeight: 400,
+    textAlign: 'center',
+    borderRight: '1px solid black',
+  },
+  tableItemBig: {
+    width: 250,
+    fontSize: 11,
+    fontWeight: 400,
+    textAlign: 'center',
+    borderRight: '1px solid black',
   },
 });

@@ -9,6 +9,7 @@ import styles from './TableContent.module.scss';
 
 // Utils
 import { getName } from '~shared/utils/getName';
+import { parseNameTable } from '~shared/utils/parseNameTable';
 
 // Components
 import { Tabs } from 'antd';
@@ -23,10 +24,6 @@ interface TableListProps {
 }
 
 export const TableContent: FC<TableListProps> = ({ className, data }) => {
-  function parseNameTable(str: string): string {
-    return str.slice(1).split("'")[0];
-  }
-
   return (
     <div className={cl(className, styles['table-content'])}>
       <Tabs defaultActiveKey='0'>

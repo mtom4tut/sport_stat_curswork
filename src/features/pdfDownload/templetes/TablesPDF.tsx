@@ -8,11 +8,11 @@ import { styles } from '../assets/styles';
 
 // Components
 import { Page, Text, View } from '@react-pdf/renderer';
+import { LayoutPDF } from './LayoutPDF';
+import { HeaderPDF } from '../ui/HeaderPDF';
 
 // Interface
 import { IDataTable } from '~features/addTableForm/model/types';
-import { LayoutPDF } from './LayoutPDF';
-import { HeaderPDF } from '../ui/HeaderPDF';
 
 interface TablesPDFProps {
   className?: string;
