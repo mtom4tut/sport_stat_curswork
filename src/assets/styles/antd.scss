@@ -1,12 +1,13 @@
 .ant-form-item-explain-error {
-  line-height: 1.1;
+  line-height: 1.1 !important;
 }
 
-.ant-space.ant-space-horizontal {
-  display: block;
-  width: 100%;
+.ant-space.ant-space-horizontal,
+.ant-input-number {
+  display: block !important;
+  width: 100% !important;
 }
 
 .ant-breadcrumb-link {
-  white-space: nowrap;
+  white-space: nowrap !important;
 }

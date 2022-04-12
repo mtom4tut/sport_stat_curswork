@@ -14,7 +14,7 @@ interface AuthPasswordProps {
   name?: string;
 }
 
-export const AuthPassword: FC<AuthPasswordProps> = ({ className, registrationMod, name = 'authPassword' }) => {
+export const AuthPassword: FC<AuthPasswordProps> = ({ className, registrationMod, name = 'password' }) => {
   return (
     <Form.Item
       name={name}
@@ -28,7 +28,7 @@ export const AuthPassword: FC<AuthPasswordProps> = ({ className, registrationMod
               return Promise.reject(new Error('Длина пароля должна быль больше 6 символов'));
             } else if (
               registrationMod &&
-              document.forms.namedItem('authForm')?.querySelector<HTMLInputElement>('[name="authPassword"]')?.value !==
+              document.forms.namedItem('authForm')?.querySelector<HTMLInputElement>('[name="password"]')?.value !==
                 value
             ) {
               return Promise.reject(new Error('Пароли не совпадают'));

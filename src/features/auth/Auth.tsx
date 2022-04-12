@@ -1,16 +1,21 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 
 // Styles
 import cl from 'classnames';
 import styles from './Auth.module.scss';
+
+// API
+import { registration } from '~processes/auth/api';
 
 // Components
 import { Button, Form, Modal } from 'antd';
 import { AuthLogin } from './ui/AuthLogin';
 import { AuthPassword } from './ui/AuthPassword';
 import { AuthMenu, DEFAULT_MENU_ITEM, menuItems } from './ui/AuthMenu';
+import { MyMessage } from '~shared/ui/MyMessage';
 
-// Config
+// Hooks
+import { useFetching } from '~shared/hooks/useFetching';
 
 // Interface
 import { IForm } from './interface/IForm';
@@ -34,32 +39,40 @@ export const Auth: FC<AuthProps> = ({ className }) => {
     document.forms.namedItem('authForm')?.reset(); // сброс формы
   }, [menu]);
 
-  const formInputs: IForm = { login: '', password: '', passwordCheck: '' }; // Инициализация полей формы
+  const formInputs: IForm = { login: '', code: '', password: '', passwordCheck: '' }; // Инициализация полей формы
   const [valueInputs, setValueInputs] = useState<IForm>(formInputs); // State формы
 
   // сработает по событию submit если форма заполнена без ошибок
   const onFinish = (values: IForm) => {
     setValueInputs(values);
-    // setIsModalVisible(false);
-    // document.forms.namedItem('authForm')?.reset(); // сброс формы
   };
 
-  // const [fetchTable, isLoading] = useFetching(fetching); // Хук для обработки API запроса
+  const [fetchReg, isLoading] = useFetching(fetching); // Хук для обработки API запроса
 
-  // // callback функция
-  // async function fetching() {
-  //   const data = await getTableLists<IDataTable>(valueInputs.tableId, listNameTable); // получаем данные
-  //   addTableEvent(data); // добавить данные в store
+  // callback функция
+  async function fetching() {
+    const data = await registration(
+      valueInputs.login,
+      valueInputs.code,
+      valueInputs.password,
+      valueInputs.passwordCheck
+    );
 
-  //   document.forms.namedItem('addDataTableForm')?.reset(); // сброс формы
-  // }
+    if (data?.data) {
+      MyMessage('error', 'Ошибка', String(data.data));
+    } else {
+      setIsModalVisible(false);
+      MyMessage('success', 'Выполнено', 'Аккаунт успешно создан');
+      document.forms.namedItem('authForm')?.reset(); // сброс формы
+    }
+  }
 
-  // // вызов функции для обработки API
-  // useMemo(() => {
-  //   if (valueInputs.tableId) {
-  //     fetchTable();
-  //   }
-  // }, [valueInputs]);
+  // вызов функции для обработки API
+  useMemo(() => {
+    if (valueInputs.code) {
+      fetchReg();
+    }
+  }, [valueInputs]);
 
   return (
     <>
@@ -81,10 +94,16 @@ export const Auth: FC<AuthProps> = ({ className }) => {
           <AuthPassword className={cl(styles['auth-modal__input'])} registrationMod={isRegistration} />
 
           {isRegistration && (
-            <AuthPassword className={cl(styles['auth-modal__input'])} registrationMod={true} name='authPasswordCheck' />
+            <AuthPassword className={cl(styles['auth-modal__input'])} registrationMod={true} name='passwordCheck' />
           )}
 
-          <Button className={cl(styles['auth-modal__submit'])} type='primary' size='large' htmlType='submit'>
+          <Button
+            loading={isLoading}
+            className={cl(styles['auth-modal__submit'])}
+            type='primary'
+            size='large'
+            htmlType='submit'
+          >
             {isRegistration ? 'Зарегистрироваться' : 'Войти'}
           </Button>
         </Form>

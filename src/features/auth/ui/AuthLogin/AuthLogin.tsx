@@ -8,7 +8,7 @@ import cl from 'classnames';
 import styles from './AuthLogin.module.scss';
 
 // Components
-import { Form, Input, Space } from 'antd';
+import { Form, Input, InputNumber, Space } from 'antd';
 
 interface AuthLoginProps {
   className?: string;
@@ -34,7 +34,7 @@ export const AuthLogin: FC<AuthLoginProps> = ({ className, registrationMod }) =>
   return (
     <>
       <Form.Item
-        name='authLogin'
+        name='login'
         className={cl(className, styles['form-item'])}
         rules={[
           {
@@ -45,7 +45,7 @@ export const AuthLogin: FC<AuthLoginProps> = ({ className, registrationMod }) =>
               } else if (!/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/.test(value)) {
                 setSendCode(false);
                 return Promise.reject(new Error('Введите корректный e-mail'));
-              } else if (registrationMod) {
+              } else if (registrationMod && !sendCode) {
                 const err = await sendMailCode(value);
                 if (err) {
                   return Promise.reject(new Error(err));
@@ -57,13 +57,13 @@ export const AuthLogin: FC<AuthLoginProps> = ({ className, registrationMod }) =>
         ]}
       >
         <Space>
-          <Input name='authLogin' className={cl(styles['form-item__input'])} placeholder='Введите e-mail' />
+          <Input name='login' className={cl(styles['form-item__input'])} placeholder='Введите e-mail' />
         </Space>
       </Form.Item>
 
       {sendCode && (
         <Form.Item
-          name='authCode'
+          name='code'
           className={cl(className, styles['form-item'])}
           rules={[
             {
@@ -83,12 +83,14 @@ export const AuthLogin: FC<AuthLoginProps> = ({ className, registrationMod }) =>
           ]}
         >
           <Space>
-            <label htmlFor='authCode' className={cl(styles['form-item__label'])}>
+            <label htmlFor='code' className={cl(styles['form-item__label'])}>
               Вам на почту был отправлен код для подтверждения регистрации. Пожалуйста введите его:
             </label>
-            <Input
-              id='authCode'
-              name='authCode'
+            <InputNumber
+              id='code'
+              name='code'
+              type='number'
+              controls={false}
               className={cl(styles['form-item__input'])}
               placeholder='Введите код подтверждения'
               maxLength={6}

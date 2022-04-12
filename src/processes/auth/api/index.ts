@@ -43,3 +43,17 @@ export const mailVerificationCode = async (mail: string, code: string) => {
     }
   }
 };
+
+export const registration = async (mail: string, code: string, password: string, passwordCheck: string) => {
+  try {
+    const data = await instance.post<string>('/registration.php', { mail, code, password, passwordCheck });
+    if (data.status !== 200) {
+      MyMessage('error', 'Ошибка', String(data.status));
+    }
+    return data;
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      MyMessage('error', 'Ошибка', err.message);
+    }
+  }
+};
