@@ -27,27 +27,18 @@ interface AuthProps {
 export const Auth: FC<AuthProps> = ({ className }) => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false); // модальное окно
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
-    document.forms.namedItem('authForm')?.reset(); // сброс формы
-  };
-
   const [menu, setMenu] = useState<string>(DEFAULT_MENU_ITEM); // активный пункт меню
   const [isRegistration, setIsRegistration] = useState<boolean>(false);
-  useEffect(() => {
-    setIsRegistration(menuItems.registration === menu);
-    document.forms.namedItem('authForm')?.reset(); // сброс формы
-  }, [menu]);
 
   const formInputs: IForm = { login: '', code: '', password: '', passwordCheck: '' }; // Инициализация полей формы
   const [valueInputs, setValueInputs] = useState<IForm>(formInputs); // State формы
 
-  // сработает по событию submit если форма заполнена без ошибок
-  const onFinish = (values: IForm) => {
-    setValueInputs(values);
-  };
-
   const [fetchReg, isLoading] = useFetching(fetching); // Хук для обработки API запроса
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    document.forms.namedItem('authForm')?.reset(); // сброс формы
+  };
 
   // callback функция
   async function fetching() {
@@ -58,14 +49,26 @@ export const Auth: FC<AuthProps> = ({ className }) => {
       valueInputs.passwordCheck
     );
 
-    if (data?.data) {
-      MyMessage('error', 'Ошибка', String(data.data));
-    } else {
-      setIsModalVisible(false);
+    const obj = data?.data;
+
+    if (obj && typeof obj === 'object') {
+      // заполнить стор...!!!!
+      handleCancel();
       MyMessage('success', 'Выполнено', 'Аккаунт успешно создан');
-      document.forms.namedItem('authForm')?.reset(); // сброс формы
+    } else if (obj) {
+      MyMessage('error', 'Ошибка', String(obj));
     }
   }
+
+  // сработает по событию submit если форма заполнена без ошибок
+  const onFinish = (values: IForm) => {
+    setValueInputs(values);
+  };
+
+  useEffect(() => {
+    setIsRegistration(menuItems.registration === menu);
+    document.forms.namedItem('authForm')?.reset(); // сброс формы
+  }, [menu]);
 
   // вызов функции для обработки API
   useMemo(() => {

@@ -17,6 +17,7 @@ interface AuthLoginProps {
 
 export const AuthLogin: FC<AuthLoginProps> = ({ className, registrationMod }) => {
   const [login, setLogin] = useState<string>('');
+  const [validCode, setValidCode] = useState<boolean>(false);
   const [sendCode, setSendCode] = useState<boolean>(false);
 
   async function sendMailCode(mail: string) {
@@ -72,11 +73,12 @@ export const AuthLogin: FC<AuthLoginProps> = ({ className, registrationMod }) =>
                   return Promise.reject(new Error('Пожалуйста введите код подтверждения.'));
                 } else if (value.length !== 6) {
                   return Promise.reject(new Error('Код должен содержать 6 символов'));
-                } else {
+                } else if (!validCode) {
                   const err = await verificationCode(login, value);
                   if (err) {
                     return Promise.reject(new Error(err));
                   }
+                  setValidCode(true);
                 }
               },
             },
