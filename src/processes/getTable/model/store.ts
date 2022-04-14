@@ -1,4 +1,4 @@
-import { createStore, createEffect } from 'effector';
+import { createStore } from 'effector';
 
 // Config
 import { IDataTable } from '~features/addTableForm/model/types';

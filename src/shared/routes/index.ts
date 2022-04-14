@@ -7,7 +7,7 @@ const AddTable = lazy(() => import('~pages/addTable'));
 const Tables = lazy(() => import('~pages/tables'));
 const TablesId = lazy(() => import('~pages/tablesId'));
 
-export const routes = [
+export const routes: IRoutes[] = [
   {
     path: '/',
     elements: AddTable,

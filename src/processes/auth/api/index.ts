@@ -1,18 +1,8 @@
-import axios from 'axios';
-
 // Config
-import { API_URL_HOST } from '~shared/constants/api';
+import { instance } from '../config/instance';
 
 // Components
 import { MyMessage } from '~shared/ui/MyMessage';
-
-const instance = axios.create({
-  withCredentials: true,
-  baseURL: API_URL_HOST,
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded',
-  },
-});
 
 export const sendMailCodeVerification = async (mail: string) => {
   try {
@@ -46,7 +36,7 @@ export const mailVerificationCode = async (mail: string, code: string) => {
 
 export const registration = async (mail: string, code: string, password: string, passwordCheck: string) => {
   try {
-    const data = await instance.post<{ mail: string; password: string } | string>('/registration.php', {
+    const data = await instance.post<string>('/registration.php', {
       mail,
       code,
       password,

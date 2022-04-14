@@ -49,14 +49,12 @@ export const Auth: FC<AuthProps> = ({ className }) => {
       valueInputs.passwordCheck
     );
 
-    const obj = data?.data;
-
-    if (obj && typeof obj === 'object') {
+    if (data?.data) {
+      MyMessage('error', 'Ошибка', String(data.data));
+    } else {
       // заполнить стор...!!!!
       handleCancel();
       MyMessage('success', 'Выполнено', 'Аккаунт успешно создан');
-    } else if (obj) {
-      MyMessage('error', 'Ошибка', String(obj));
     }
   }
 
