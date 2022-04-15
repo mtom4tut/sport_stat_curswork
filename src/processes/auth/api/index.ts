@@ -52,3 +52,31 @@ export const registration = async (mail: string, code: string, password: string,
     }
   }
 };
+
+export const isAuth = async () => {
+  try {
+    const data = await instance.get('/isAuth.php');
+    if (data.status !== 200) {
+      MyMessage('error', 'Ошибка', String(data.status));
+    }
+    return data;
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      MyMessage('error', 'Ошибка', err.message);
+    }
+  }
+};
+
+export const logOutAccount = async () => {
+  try {
+    const data = await instance.get<string>('/logout.php');
+    if (data.status !== 200) {
+      MyMessage('error', 'Ошибка', String(data.status));
+    }
+    return data;
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      MyMessage('error', 'Ошибка', err.message);
+    }
+  }
+};

@@ -8,7 +8,7 @@ import { addTableEvent } from '~processes/getTable/model/events/add';
 
 // Config
 import { AddTableFormProps, IDataTable, IForm } from './model/types';
-import { listNameTable } from '~processes/getTable/model/listNameTable';
+import { listNameTable } from '~processes/getTable/config/listNameTable';
 
 // Components
 import Title from 'antd/lib/typography/Title';

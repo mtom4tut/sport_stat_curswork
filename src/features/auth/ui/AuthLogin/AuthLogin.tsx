@@ -58,7 +58,7 @@ export const AuthLogin: FC<AuthLoginProps> = ({ className, registrationMod }) =>
         ]}
       >
         <Space>
-          <Input name='login' className={cl(styles['form-item__input'])} placeholder='Введите e-mail' />
+          <Input name='login' className={cl(styles['form-item__input'])} placeholder='Введите e-mail' allowClear />
         </Space>
       </Form.Item>
 

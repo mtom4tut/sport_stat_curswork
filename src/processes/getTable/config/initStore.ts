@@ -1,5 +1,5 @@
 // Config
-import { listNameTable } from '../model/listNameTable';
+import { listNameTable } from './listNameTable';
 
 // Interface
 import { IDataTable } from '~features/addTableForm/model/types';
