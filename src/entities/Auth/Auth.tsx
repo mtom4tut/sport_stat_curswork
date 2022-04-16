@@ -7,6 +7,13 @@ import styles from './Auth.module.scss';
 // API
 import { authorization, logOutAccount, registration } from '~processes/auth/api';
 
+// Store
+import { useStore } from 'effector-react';
+import { $storeAuth } from '~processes/auth/model/store';
+
+// Event
+import { setAuthStatus } from '~processes/auth/model/event/setAuthStatus';
+
 // Components
 import { Button, Form, Modal } from 'antd';
 import { AuthLogin } from './ui/AuthLogin';
@@ -19,17 +26,18 @@ import { useFetching } from '~shared/hooks/useFetching';
 
 // Interface
 import { IForm } from './interface/IForm';
+import { formInputs } from './config/formInputs';
 
 interface AuthProps {
   className?: string;
 }
 
 export const Auth: FC<AuthProps> = ({ className }) => {
+  const statusAuth = useStore($storeAuth);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false); // модальное окно
 
   const [menu, setMenu] = useState<string>(MENU_ITEMS.authorization); // активный пункт меню
 
-  const formInputs: IForm = { login: '', code: '', password: '', passwordCheck: '' }; // Инициализация полей формы
   const [valueInputs, setValueInputs] = useState<IForm>(formInputs); // State формы
 
   const [fetchAuth, isLoading] = useFetching(fetching); // Хук для обработки API запроса
@@ -42,7 +50,7 @@ export const Auth: FC<AuthProps> = ({ className }) => {
 
   async function logOut() {
     await logOutAccount();
-    localStorage.setItem('auth', 'false');
+    setAuthStatus(false);
   }
 
   // callback функция
@@ -66,11 +74,11 @@ export const Auth: FC<AuthProps> = ({ className }) => {
     if (data?.data) {
       MyMessage('error', 'Ошибка', String(data.data));
       return;
-    } else if (menu === MENU_ITEMS.authorization) {
+    } else if (menu === MENU_ITEMS.registration) {
       MyMessage('success', 'Выполнено', 'Аккаунт успешно создан');
     }
 
-    localStorage.setItem('auth', 'true');
+    setAuthStatus(true);
     handleCancel();
   }
 
@@ -92,7 +100,7 @@ export const Auth: FC<AuthProps> = ({ className }) => {
 
   return (
     <>
-      {localStorage.getItem('auth') === 'true' ? (
+      {statusAuth ? (
         <Button className={cl(className, styles['auth'])} onClick={fetchLogOut} loading={isLoadingLogOut}>
           <svg xmlns='http://www.w3.org/2000/svg' version='1.0' viewBox='0 0 512 512'>
             <path d='M32 1.4C17.3 5.5 5.3 17.6 1.4 32.4.3 36.6 0 70.8 0 234.5 0 450.2-.3 437.6 5.7 448c3.7 6.2 11.1 13.4 16.9 16.3 2.7 1.3 35 12.5 71.9 24.8l67 22.4h9c11 0 17.2-2 25.5-8.1 6.7-4.9 12.1-12.3 15-20.7 1.6-4.6 2-8.2 2-20.2V448h35.3c40.2 0 44.2-.5 57.7-7.1 16.2-7.9 29.3-24.4 33.4-41.9 2.3-9.7 2.3-103.3.1-108.8-6.7-16-29.9-17-38.3-1.7-1.5 2.6-1.8 8.9-2.2 52l-.5 49-2.5 4.5c-1.4 2.4-4.5 5.8-6.8 7.5l-4.4 3-35.9.3-35.9.3-.2-165.3-.3-165.3-3.2-6.7c-5.2-11-12.2-17.5-24.2-22.5l-5.6-2.3 52.7.3 52.6.2 4.4 3c2.3 1.7 5.4 5.1 6.8 7.5l2.5 4.5.5 38.5c.5 37.7.5 38.6 2.7 42.1 1.3 2 4.2 4.9 6.5 6.5 3.7 2.6 5 2.9 11.8 2.9 6.7 0 8.1-.3 11.6-2.7 2.1-1.5 5-4.4 6.4-6.5l2.5-3.7.3-39.7c.3-44.8 0-47.5-6.6-60.9-5.4-11-16.8-22.3-28.2-27.9-15.2-7.4-8-7.1-146-7C64.3.2 35.5.5 32 1.4z' />

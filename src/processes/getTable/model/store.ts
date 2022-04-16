@@ -4,10 +4,11 @@ import { createStore } from 'effector';
 import { IDataTable } from '~features/addTableForm/model/types';
 
 // Event
+import { init, initTableEvent } from './events/init';
 import { add, addTableEvent } from './events/add';
-import { initStore } from '../config/initStore';
 import { removeTableEvent, remove } from './events/remove';
 
-export const $storeTables = createStore<IDataTable[]>(initStore())
+export const $storeTables = createStore<IDataTable[]>([])
+  .on(initTableEvent, (state, status: boolean) => init(status))
   .on(addTableEvent, (state, data: IDataTable) => add(state, data))
   .on(removeTableEvent, (state, spreadsheetId: string) => remove(state, spreadsheetId));
