@@ -19,7 +19,10 @@ export function add(state: IDataTable[], data: IDataTable) {
       // добавить данные в localstore
       let tableId: string[] = localStorage.getItem('tableId') ? JSON.parse(localStorage.getItem('tableId')!) : [];
       tableId.push(data.spreadsheetId);
-      localStorage.setItem('tableId', JSON.stringify(tableId));
+
+      if(localStorage.getItem('auth') === 'false') {
+        localStorage.setItem('tableId', JSON.stringify(tableId));
+      }
 
       MyMessage('success', 'Выполнено', 'Таблица успешно добавлена.');
       return state;

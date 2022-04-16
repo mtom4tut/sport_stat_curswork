@@ -1,5 +1,5 @@
 import { BrowserRouter } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 // Components
 import { Routing } from '../pages';
@@ -27,7 +27,6 @@ import { useFetching } from '~shared/hooks/useFetching';
 export const App = () => {
   useStore($storeTables);
   const statusAuth = useStore($storeAuth);
-  const [tableId, setTableId] = useState<string[]>([]);
 
   const [fetchInit, isLoading] = useFetching(init);
 
@@ -36,18 +35,20 @@ export const App = () => {
     const auth = await isAuth();
     if (auth?.data) {
       const dataTableId = await getTableId();
-      setTableId(dataTableId?.data ? dataTableId?.data : []);
+      initTableEvent(dataTableId?.data ? dataTableId?.data : []);
+    } else {
+      initTableEvent([]);
     }
     setAuthStatus(auth?.data);
   }
 
   useEffect(() => {
+    let abortController = new AbortController();
     fetchInit();
-  }, []);
-
-  useEffect(() => {
-    initTableEvent(tableId);
-  }, [statusAuth, tableId]);
+    return () => {
+      abortController.abort();
+    };
+  }, [statusAuth]);
 
   return (
     <div className='app'>
