@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 
 // Components
 import { Routing } from '../pages';
+import { Spin } from 'antd';
 
 // Store
 import { useStore } from 'effector-react';
@@ -16,24 +17,32 @@ import { setAuthStatus } from '~processes/auth/model/event/setAuthStatus';
 // API
 import { getTableId, isAuth } from '~processes/auth/api';
 
+// Config
+import { LOADING_TEXT } from '~shared/constants/message';
+
 // Helpers
 import { initToken } from '~processes/auth/helpers/initToken';
+import { useFetching } from '~shared/hooks/useFetching';
 
 export const App = () => {
   useStore($storeTables);
   const statusAuth = useStore($storeAuth);
   const [tableId, setTableId] = useState<string[]>([]);
 
-  const init = async () => {
+  const [fetchInit, isLoading] = useFetching(init);
+
+  async function init() {
     await initToken();
     const auth = await isAuth();
-    const dataTableId = await getTableId();
-    setTableId(dataTableId?.data ? dataTableId?.data : []);
+    if (auth?.data) {
+      const dataTableId = await getTableId();
+      setTableId(dataTableId?.data ? dataTableId?.data : []);
+    }
     setAuthStatus(auth?.data);
-  };
+  }
 
   useEffect(() => {
-    init();
+    fetchInit();
   }, []);
 
   useEffect(() => {
@@ -42,9 +51,7 @@ export const App = () => {
 
   return (
     <div className='app'>
-      <BrowserRouter>
-        <Routing />
-      </BrowserRouter>
+      <BrowserRouter>{isLoading ? <Spin tip={LOADING_TEXT} size='large' /> : <Routing />}</BrowserRouter>
     </div>
   );
 };

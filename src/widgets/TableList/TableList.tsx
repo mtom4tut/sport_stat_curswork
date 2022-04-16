@@ -24,10 +24,6 @@ interface TableListProps {
 export const TableList: FC<TableListProps> = ({ className, data }) => {
   const [filterData, setFilterData] = useState<IDataTable[]>(data);
 
-  useMemo(() => {
-    setFilterData(data);
-  }, [data]);
-
   function filteredData(val: string) {
     if (val) {
       val = val.toLowerCase();

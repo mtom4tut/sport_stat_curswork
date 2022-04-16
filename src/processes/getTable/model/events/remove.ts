@@ -12,7 +12,9 @@ export function remove(state: IDataTable[], spreadsheetId: string) {
   try {
     state = state.filter(item => item.spreadsheetId !== spreadsheetId);
     const spreadsheetIdArr: string[] = state.map(item => item.spreadsheetId);
-    localStorage.setItem('tableId', JSON.stringify(spreadsheetIdArr));
+    if(localStorage.getItem('auth') === 'false') {
+      localStorage.setItem('tableId', JSON.stringify(spreadsheetIdArr));
+    }
     MyMessage('success', 'Выполнено', 'Таблица успешно удалена.');
     return state;
   } catch (err: unknown) {
