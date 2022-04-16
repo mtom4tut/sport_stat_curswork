@@ -1,8 +1,8 @@
 import { FC, useMemo, useState } from 'react';
 
 // API
-import { addTableId, getTableLists } from '~processes/getTable/api';
-import { isAuth } from '~processes/auth/api';
+import { getTableLists } from '~processes/getTable/api';
+import { addTableId, isAuth } from '~processes/auth/api';
 
 // Events
 import { addTableEvent } from '~processes/getTable/model/events/add';

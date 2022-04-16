@@ -9,6 +9,6 @@ import { add, addTableEvent } from './events/add';
 import { removeTableEvent, remove } from './events/remove';
 
 export const $storeTables = createStore<IDataTable[]>([])
-  .on(initTableEvent, (state, status: boolean) => init(status))
+  .on(initTableEvent, (state, spreadsheetId: string[]) => init(spreadsheetId))
   .on(addTableEvent, (state, data: IDataTable) => add(state, data))
   .on(removeTableEvent, (state, spreadsheetId: string) => remove(state, spreadsheetId));

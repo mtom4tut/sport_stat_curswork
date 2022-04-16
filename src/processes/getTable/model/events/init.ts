@@ -9,19 +9,20 @@ import { listNameTable } from '~processes/getTable/config/listNameTable';
 // Api
 import { getTableLists } from '~processes/getTable/api';
 
-export const initTableEvent = createEvent<boolean>();
+export const initTableEvent = createEvent<string[]>();
 
-export function init(status: boolean) {
+export function init(tableId: string[]) {
   const state: IDataTable[] = [];
-  // получаем данные из lockalstorage
-  if (!status && localStorage.getItem('tableId')) {
-    const tableId: string[] = JSON.parse(localStorage.getItem('tableId')!);
 
-    tableId.map(async id => {
-      const data = await getTableLists<IDataTable>(id, listNameTable);
-      state.push(data);
-    });
+  // получаем данные из lockalstorage
+  if (localStorage.getItem('auth') === 'false' && localStorage.getItem('tableId')) {
+    tableId = JSON.parse(localStorage.getItem('tableId')!);
   }
+
+  tableId.map(async id => {
+    const data = await getTableLists<IDataTable>(id, listNameTable);
+    state.push(data);
+  });
 
   return state;
 }

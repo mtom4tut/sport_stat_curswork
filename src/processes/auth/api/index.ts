@@ -97,3 +97,45 @@ export const logOutAccount = async () => {
     }
   }
 };
+
+export const addTableId = async (id: string) => {
+  try {
+    const data = await instance.post<string>('/addSpreadsheets.php', { id });
+    if (data.status !== 200) {
+      MyMessage('error', 'Ошибка', String(data.status));
+    }
+    return data;
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      MyMessage('error', 'Ошибка', err.message);
+    }
+  }
+};
+
+export const removeTableId = async (id: string) => {
+  try {
+    const data = await instance.post<string>('/removeSpreadsheets.php', { id });
+    if (data.status !== 200) {
+      MyMessage('error', 'Ошибка', String(data.status));
+    }
+    return data;
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      MyMessage('error', 'Ошибка', err.message);
+    }
+  }
+};
+
+export const getTableId = async () => {
+  try {
+    const data = await instance.get<string[]>('/getSpreadsheets.php');
+    if (data.status !== 200) {
+      MyMessage('error', 'Ошибка', String(data.status));
+    }
+    return data;
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      MyMessage('error', 'Ошибка', err.message);
+    }
+  }
+};
