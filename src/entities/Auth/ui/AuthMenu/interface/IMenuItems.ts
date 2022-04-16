@@ -1,4 +1,4 @@
 export interface IMenuItems {
-  entrance: 'entrance';
+  authorization: 'authorization';
   registration: 'registration';
 }

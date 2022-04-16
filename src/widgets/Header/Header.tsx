@@ -7,7 +7,7 @@ import { NAVIGATION_ITEMS } from '~shared/ui/Navigation/model';
 // Components
 import { Container } from '~shared/layout/Container';
 import Navigation from '~shared/ui/Navigation/Navigation';
-import { Auth } from '~features/auth';
+import { Auth } from '~entities/Auth';
 
 
 // Styles

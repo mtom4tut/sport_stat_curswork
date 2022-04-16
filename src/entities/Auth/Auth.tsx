@@ -1,18 +1,17 @@
 import { FC, useEffect, useMemo, useState } from 'react';
-import { useStore } from 'effector-react';
 
 // Styles
 import cl from 'classnames';
 import styles from './Auth.module.scss';
 
 // API
-import { logOutAccount, registration } from '~processes/auth/api';
+import { authorization, logOutAccount, registration } from '~processes/auth/api';
 
 // Components
 import { Button, Form, Modal } from 'antd';
 import { AuthLogin } from './ui/AuthLogin';
 import { AuthPassword } from './ui/AuthPassword';
-import { AuthMenu, DEFAULT_MENU_ITEM, menuItems } from './ui/AuthMenu';
+import { AuthMenu, MENU_ITEMS } from './ui/AuthMenu';
 import { MyMessage } from '~shared/ui/MyMessage';
 
 // Hooks
@@ -28,13 +27,12 @@ interface AuthProps {
 export const Auth: FC<AuthProps> = ({ className }) => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false); // модальное окно
 
-  const [menu, setMenu] = useState<string>(DEFAULT_MENU_ITEM); // активный пункт меню
-  const [isRegistration, setIsRegistration] = useState<boolean>(false);
+  const [menu, setMenu] = useState<string>(MENU_ITEMS.authorization); // активный пункт меню
 
   const formInputs: IForm = { login: '', code: '', password: '', passwordCheck: '' }; // Инициализация полей формы
   const [valueInputs, setValueInputs] = useState<IForm>(formInputs); // State формы
 
-  const [fetchReg, isLoading] = useFetching(fetching); // Хук для обработки API запроса
+  const [fetchAuth, isLoading] = useFetching(fetching); // Хук для обработки API запроса
   const [fetchLogOut, isLoadingLogOut] = useFetching(logOut); // Хук для обработки API запроса
 
   const handleCancel = () => {
@@ -49,20 +47,31 @@ export const Auth: FC<AuthProps> = ({ className }) => {
 
   // callback функция
   async function fetching() {
-    const data = await registration(
-      valueInputs.login,
-      valueInputs.code,
-      valueInputs.password,
-      valueInputs.passwordCheck
-    );
+    let data;
+
+    switch (menu) {
+      case MENU_ITEMS.authorization:
+        data = await authorization(valueInputs.login, valueInputs.password);
+        break;
+
+      case MENU_ITEMS.registration:
+        data = await registration(valueInputs.login, valueInputs.code, valueInputs.password, valueInputs.passwordCheck);
+        break;
+
+      default:
+        MyMessage('error', 'Ошибка', 'Такой пункт меню отсутствует');
+        break;
+    }
 
     if (data?.data) {
       MyMessage('error', 'Ошибка', String(data.data));
-    } else {
-      localStorage.setItem('auth', 'true');
-      handleCancel();
+      return;
+    } else if (menu === MENU_ITEMS.authorization) {
       MyMessage('success', 'Выполнено', 'Аккаунт успешно создан');
     }
+
+    localStorage.setItem('auth', 'true');
+    handleCancel();
   }
 
   // сработает по событию submit если форма заполнена без ошибок
@@ -71,14 +80,13 @@ export const Auth: FC<AuthProps> = ({ className }) => {
   };
 
   useEffect(() => {
-    setIsRegistration(menuItems.registration === menu);
     document.forms.namedItem('authForm')?.reset(); // сброс формы
   }, [menu]);
 
   // вызов функции для обработки API
   useMemo(() => {
-    if (valueInputs.code) {
-      fetchReg();
+    if (valueInputs.password) {
+      fetchAuth();
     }
   }, [valueInputs]);
 
@@ -106,11 +114,14 @@ export const Auth: FC<AuthProps> = ({ className }) => {
         <AuthMenu onClick={setMenu} />
 
         <Form name='authForm' className={cl(styles['auth-modal__form'])} autoComplete='off' onFinish={onFinish}>
-          <AuthLogin className={cl(styles['auth-modal__input'])} registrationMod={isRegistration} />
+          <AuthLogin className={cl(styles['auth-modal__input'])} registrationMod={menu === MENU_ITEMS.registration} />
 
-          <AuthPassword className={cl(styles['auth-modal__input'])} registrationMod={isRegistration} />
+          <AuthPassword
+            className={cl(styles['auth-modal__input'])}
+            registrationMod={menu === MENU_ITEMS.registration}
+          />
 
-          {isRegistration && (
+          {menu === MENU_ITEMS.registration && (
             <AuthPassword className={cl(styles['auth-modal__input'])} registrationMod={true} name='passwordCheck' />
           )}
 
@@ -121,7 +132,7 @@ export const Auth: FC<AuthProps> = ({ className }) => {
             size='large'
             htmlType='submit'
           >
-            {isRegistration ? 'Зарегистрироваться' : 'Войти'}
+            {menu === MENU_ITEMS.registration ? 'Зарегистрироваться' : 'Войти'}
           </Button>
         </Form>
       </Modal>

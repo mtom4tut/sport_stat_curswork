@@ -53,6 +53,23 @@ export const registration = async (mail: string, code: string, password: string,
   }
 };
 
+export const authorization = async (mail: string, password: string) => {
+  try {
+    const data = await instance.post<string>('/authorization.php', {
+      mail,
+      password,
+    });
+    if (data.status !== 200) {
+      MyMessage('error', 'Ошибка', String(data.status));
+    }
+    return data;
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      MyMessage('error', 'Ошибка', err.message);
+    }
+  }
+};
+
 export const isAuth = async () => {
   try {
     const data = await instance.get('/isAuth.php');
