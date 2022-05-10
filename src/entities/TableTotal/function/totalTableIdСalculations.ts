@@ -1,5 +1,14 @@
 import { IDataTable } from '~features/addTableForm/model/types';
-import { filteredTable, powerOfTheStage, powerTotal, sportsmenWeight, timeInterval, timeSeconds, YOC } from './helpers';
+import {
+  AePAndAnp,
+  filteredTable,
+  powerOfTheStage,
+  powerTotal,
+  sportsmenWeight,
+  timeInterval,
+  timeSeconds,
+  YOC,
+} from './helpers';
 
 export function totalTableIdСalculations(data: IDataTable) {
   // /////////// Ноги
@@ -48,11 +57,19 @@ export function totalTableIdСalculations(data: IDataTable) {
 
   // /////////// УОС ноги
   const legsYOC = YOC(legs, weight);
+  const legsMaxYOC = legsYOC[legsYOC.length - 1][2];
   legsYOC.unshift(['ЧСС', 'Мощность', 'УОС']);
 
   // /////////// УОС плечевой пояс
   const armsYOC = YOC(arms, weight);
+  const armsMaxYOC = armsYOC[armsYOC.length - 1][2];
   armsYOC.unshift(['ЧСС', 'Мощность', 'УОС']);
+
+  // /////////// АэП и АнП ноги
+  const [legsAePAndAnp, legsArrAeP, legsArrAnp] = AePAndAnp(legs);
+
+  // /////////// АэП и АнП плечевой пояс
+  const [armsAePAndAnp, armsArrAeP, armsArrAnp] = AePAndAnp(arms);
 
   return {
     legsPenultimateStageNum,
@@ -67,5 +84,13 @@ export function totalTableIdСalculations(data: IDataTable) {
     armsTotal,
     legsYOC,
     armsYOC,
+    legsMaxYOC,
+    armsMaxYOC,
+    legsAePAndAnp,
+    legsArrAeP,
+    legsArrAnp,
+    armsAePAndAnp,
+    armsArrAeP,
+    armsArrAnp,
   };
 }
