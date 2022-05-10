@@ -40,9 +40,11 @@ export const TableTotal: FC<TableTotalProps> = ({ className, data }) => {
     armsHeartRateMaxYOC,
     legsAePAndAnp,
     legsAeP,
+    legsPowerAeP,
     legsAnp,
     armsAePAndAnp,
     armsAeP,
+    armsPowerAeP,
     armsAnp,
   } = totalTableIdСalculations(data);
 
@@ -153,10 +155,24 @@ export const TableTotal: FC<TableTotalProps> = ({ className, data }) => {
 
       <div>
         <p className={cl(styles['table-total__item'])}>
+          Мощность, АэП, Вт (ноги): <b>{legsPowerAeP}</b>
+        </p>
+        <p className={cl(styles['table-total__item'])}>
+          Мощность, АэП, Вт (плечевой пояс): <b>{armsPowerAeP}</b>
+        </p>
+
+        <p className={cl(styles['table-total__item'])}>
           ЧСС АэП, уд/мин (ноги): <b>{legsAeP}</b>
         </p>
         <p className={cl(styles['table-total__item'])}>
           ЧСС АэП, уд/мин (плечевой пояс): <b>{armsAeP}</b>
+        </p>
+
+        <p className={cl(styles['table-total__item'])}>
+          ПК АэП, л/мин (ноги): <b>{(legsPowerAeP / 75).toFixed(2)}</b>
+        </p>
+        <p className={cl(styles['table-total__item'])}>
+          ПК АэП, л/мин (плечевой пояс): <b>{(armsPowerAeP / 75).toFixed(2)}</b>
         </p>
 
         <p className={cl(styles['table-total__item'])}>
