@@ -58,18 +58,20 @@ export function totalTableIdСalculations(data: IDataTable) {
   // /////////// УОС ноги
   const legsYOC = YOC(legs, weight);
   const legsMaxYOC = legsYOC[legsYOC.length - 1][2];
+  const legsHeartRateMaxYOC = legsYOC[legsYOC.length - 1][0];
   legsYOC.unshift(['ЧСС', 'Мощность', 'УОС']);
 
   // /////////// УОС плечевой пояс
   const armsYOC = YOC(arms, weight);
   const armsMaxYOC = armsYOC[armsYOC.length - 1][2];
+  const armsHeartRateMaxYOC = armsYOC[armsYOC.length - 1][0];
   armsYOC.unshift(['ЧСС', 'Мощность', 'УОС']);
 
   // /////////// АэП и АнП ноги
-  const [legsAePAndAnp, legsArrAeP, legsArrAnp] = AePAndAnp(legs);
+  const [legsAePAndAnp, legsAeP, legsAnp] = AePAndAnp(legs);
 
   // /////////// АэП и АнП плечевой пояс
-  const [armsAePAndAnp, armsArrAeP, armsArrAnp] = AePAndAnp(arms);
+  const [armsAePAndAnp, armsAeP, armsAnp] = AePAndAnp(arms);
 
   return {
     legsPenultimateStageNum,
@@ -85,12 +87,14 @@ export function totalTableIdСalculations(data: IDataTable) {
     legsYOC,
     armsYOC,
     legsMaxYOC,
+    legsHeartRateMaxYOC,
     armsMaxYOC,
+    armsHeartRateMaxYOC,
     legsAePAndAnp,
-    legsArrAeP,
-    legsArrAnp,
+    legsAeP,
+    legsAnp,
     armsAePAndAnp,
-    armsArrAeP,
-    armsArrAnp,
+    armsAeP,
+    armsAnp,
   };
 }

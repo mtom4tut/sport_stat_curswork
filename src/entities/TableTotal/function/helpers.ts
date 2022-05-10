@@ -66,10 +66,28 @@ export function YOC(dataList: string[][], sportsmenWeight: number) {
   return legsYOC;
 }
 
-export function AePAndAnp(data: string[][]): [string[][], number[], number[]] {
-  const AePAndAnp: string[][] = [['Мощность', 'ЧСС', "V'E", 'a1', 'b1', 'x1', 'y1', 'x2', 'y2']];
-  const arrAeP: number[] = [];
-  const arrAnp: number[] = [];
+export function AePAndAnp(data: string[][]): [string[][], number, number] {
+  const AePAndAnp: string[][] = [
+    [
+      'Мощность',
+      'ЧСС',
+      "V'E",
+      'Нижняя прямая',
+      'Верхняя прямая',
+      'Уходит вверх от нижней прямой',
+      'Уходит вверх от верхней прямой',
+      'a1',
+      'b1',
+      'x1',
+      'y1',
+      'x2',
+      'y2',
+    ],
+  ];
+  let AeP = -1;
+  let Anp = -1;
+  let powerAeP = -1;
+  let powerAnp = -1;
 
   const x1 = parseFloat(data[0][5].replace(',', '.'));
   const x2 = parseFloat(data[1][5].replace(',', '.'));
@@ -85,21 +103,42 @@ export function AePAndAnp(data: string[][]): [string[][], number[], number[]] {
     ((x1 - xAverage) ** 2 + (x2 - xAverage) ** 2 + (x3 - xAverage) ** 2);
   const intersectionY = yAverage - xAverage * lowerLineCoefficients;
 
+  let oldMpc: number;
   let oldHeartRate: number;
   let oldVe: number;
+
+  let isTrueLowerStraight = true;
+  let isTrueUpperStraight = true;
 
   data.map((item: string[], i: number) => {
     const mpc = parseFloat(item[6].replace(',', '.'));
     const heartRate = parseFloat(item[5].replace(',', '.'));
     const ve = parseFloat(item[10].replace(',', '.'));
+    const lowerStraight = intersectionY + heartRate * lowerLineCoefficients;
+    const upperStraight = heartRate * lowerLineCoefficients + intersectionY + 10;
+    const lowerStraightStatus = ve > lowerStraight ? 'ИСТИНА' : 'ЛОЖЬ';
+    const upperStraightStatus = ve > upperStraight ? 'ИСТИНА' : 'ЛОЖЬ';
 
     if (i === 0) {
-      AePAndAnp.push([String(mpc), String(heartRate), String(ve), '', '', '', '', '', '']);
+      AePAndAnp.push([
+        String(mpc),
+        String(heartRate),
+        String(ve),
+        String(lowerStraight.toFixed(2)),
+        String(upperStraight.toFixed(2)),
+        lowerStraightStatus,
+        upperStraightStatus,
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+      ]);
       oldHeartRate = heartRate;
       oldVe = ve;
       return;
     }
-
     const a1 = (ve - oldVe) / (heartRate - oldHeartRate);
     const b1 = oldVe - a1 * oldHeartRate;
     const x1 = (b1 - intersectionY) / (lowerLineCoefficients - a1);
@@ -107,14 +146,30 @@ export function AePAndAnp(data: string[][]): [string[][], number[], number[]] {
     const x2 = (b1 - (intersectionY + 10)) / (lowerLineCoefficients - a1);
     const y2 = a1 * x2 + b1;
 
+    if (x1 && lowerStraightStatus === 'ИСТИНА' && isTrueLowerStraight) {
+      AeP = Number(x1.toFixed(2));
+      isTrueLowerStraight = false;
+    } else if (lowerStraightStatus === 'ЛОЖЬ') {
+      isTrueLowerStraight = true;
+    }
+
+    if (upperStraightStatus === 'ИСТИНА' && isTrueUpperStraight) {
+      Anp = Number(x2.toFixed(2));
+      isTrueUpperStraight = false;
+    } else if (upperStraightStatus === 'ЛОЖЬ') {
+      isTrueUpperStraight = true;
+    }
+    
     oldVe = ve;
     oldHeartRate = heartRate;
-    arrAeP.push(x1);
-    arrAnp.push(x2);
     AePAndAnp.push([
       String(mpc),
       String(heartRate),
       String(ve),
+      String(lowerStraight.toFixed(2)),
+      String(upperStraight.toFixed(2)),
+      lowerStraightStatus,
+      upperStraightStatus,
       String(a1.toFixed(2)),
       String(b1.toFixed(2)),
       String(x1.toFixed(2)),
@@ -124,5 +179,5 @@ export function AePAndAnp(data: string[][]): [string[][], number[], number[]] {
     ]);
   });
 
-  return [AePAndAnp, arrAeP, arrAnp];
+  return [AePAndAnp, AeP, Anp];
 }

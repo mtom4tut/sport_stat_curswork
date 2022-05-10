@@ -35,13 +35,15 @@ export const TableTotal: FC<TableTotalProps> = ({ className, data }) => {
     legsYOC,
     armsYOC,
     legsMaxYOC,
+    legsHeartRateMaxYOC,
     armsMaxYOC,
+    armsHeartRateMaxYOC,
     legsAePAndAnp,
-    legsArrAeP,
-    legsArrAnp,
+    legsAeP,
+    legsAnp,
     armsAePAndAnp,
-    armsArrAeP,
-    armsArrAnp,
+    armsAeP,
+    armsAnp,
   } = totalTableIdСalculations(data);
 
   return (
@@ -121,14 +123,20 @@ export const TableTotal: FC<TableTotalProps> = ({ className, data }) => {
         <CollapsePanel header='УОС Ноги' key='3'>
           <Table data={legsYOC} />
           <p className={cl(styles['table-total__item'])}>
-            УОС max, мл (ноги): <b>{legsMaxYOC}</b>
+            УОС max, мл: <b>{legsMaxYOC}</b>
+          </p>
+          <p className={cl(styles['table-total__item'])}>
+            ЧСС УОС max, уд/мин: <b>{legsHeartRateMaxYOC}</b>
           </p>
         </CollapsePanel>
 
         <CollapsePanel header='УОС Плечевой пояс' key='4'>
           <Table data={armsYOC} />
           <p className={cl(styles['table-total__item'])}>
-            УОС max, мл (плечевой пояс): <b>{armsMaxYOC}</b>
+            УОС max, мл: <b>{armsMaxYOC}</b>
+          </p>
+          <p className={cl(styles['table-total__item'])}>
+            ЧСС УОС max, уд/мин: <b>{armsHeartRateMaxYOC}</b>
           </p>
         </CollapsePanel>
 
@@ -140,6 +148,24 @@ export const TableTotal: FC<TableTotalProps> = ({ className, data }) => {
           <Table data={armsAePAndAnp} />
         </CollapsePanel>
       </Collapse>
+
+      <hr />
+
+      <div>
+        <p className={cl(styles['table-total__item'])}>
+          ЧСС АэП, уд/мин (ноги): <b>{legsAeP}</b>
+        </p>
+        <p className={cl(styles['table-total__item'])}>
+          ЧСС АэП, уд/мин (плечевой пояс): <b>{armsAeP}</b>
+        </p>
+
+        <p className={cl(styles['table-total__item'])}>
+          ЧСС АнП, уд/мин (ноги): <b>{legsAnp}</b>
+        </p>
+        <p className={cl(styles['table-total__item'])}>
+          ЧСС АнП, уд/мин (плечевой пояс): <b>{armsAnp}</b>
+        </p>
+      </div>
     </>
   );
 };
