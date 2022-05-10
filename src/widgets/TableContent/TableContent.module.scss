@@ -7,5 +7,9 @@
     position: absolute;
     top: 5px;
     right: 0;
+
+    &-spin {
+      margin-top: 0 !important;
+    }
   }
 }

@@ -68,10 +68,10 @@ export function totalTableIdСalculations(data: IDataTable) {
   armsYOC.unshift(['ЧСС', 'Мощность', 'УОС']);
 
   // /////////// АэП и АнП ноги
-  const [legsAePAndAnp, legsAeP, legsPowerAeP, legsAnp] = AePAndAnp(legs);
+  const [legsAePAndAnp, legsAeP, legsPowerAeP, legsAnP, legsPowerAnP] = AePAndAnp(legs);
 
   // /////////// АэП и АнП плечевой пояс
-  const [armsAePAndAnp, armsAeP, armsPowerAeP, armsAnp] = AePAndAnp(arms);
+  const [armsAePAndAnp, armsAeP, armsPowerAeP, armsAnP, armsPowerAnP] = AePAndAnp(arms);
 
   return {
     legsPenultimateStageNum,
@@ -93,10 +93,12 @@ export function totalTableIdСalculations(data: IDataTable) {
     legsAePAndAnp,
     legsAeP,
     legsPowerAeP,
-    legsAnp,
+    legsAnP,
+    legsPowerAnP,
     armsAePAndAnp,
     armsAeP,
     armsPowerAeP,
-    armsAnp,
+    armsAnP,
+    armsPowerAnP
   };
 }

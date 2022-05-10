@@ -66,7 +66,7 @@ export function YOC(dataList: string[][], sportsmenWeight: number) {
   return legsYOC;
 }
 
-export function AePAndAnp(data: string[][]): [string[][], number, number, number] {
+export function AePAndAnp(data: string[][]): [string[][], number, number, number, number] {
   const AePAndAnp: string[][] = [
     [
       'Мощность',
@@ -87,7 +87,7 @@ export function AePAndAnp(data: string[][]): [string[][], number, number, number
   let AeP = -1;
   let Anp = -1;
   let powerAeP = -1;
-  let powerAnp = -1;
+  let powerAnP = -1;
 
   const x1 = parseFloat(data[0][5].replace(',', '.'));
   const x2 = parseFloat(data[1][5].replace(',', '.'));
@@ -196,9 +196,16 @@ export function AePAndAnp(data: string[][]): [string[][], number, number, number
       powerAeP = Number(((AeP - b) / a).toFixed(2));
     }
 
+    if (oldHeartRate <= Anp && Anp <= heartRate) {
+      const a = (heartRate - oldHeartRate) / (mpc - oldMpc);
+      const b = oldHeartRate - oldMpc * a;
+
+      powerAnP = Number(((Anp - b) / a).toFixed(2));
+    }
+
     oldMpc = mpc;
     oldHeartRate = heartRate;
   });
 
-  return [AePAndAnp, AeP, powerAeP, Anp];
+  return [AePAndAnp, AeP, powerAeP, Anp, powerAnP];
 }

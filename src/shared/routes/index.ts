@@ -6,12 +6,12 @@ const Error404 = lazy(() => import('~pages/error404'));
 const AddTable = lazy(() => import('~pages/addTable'));
 
 const Tables = lazy(async () => {
-  await new Promise(resolve => setTimeout(resolve, 300));
+  await new Promise(resolve => setTimeout(resolve, 500));
   return import('~pages/tables');
 });
 
 const TablesId = lazy(async () => {
-  await new Promise(resolve => setTimeout(resolve, 350));
+  await new Promise(resolve => setTimeout(resolve, 550));
   return import('~pages/tablesId');
 });
 

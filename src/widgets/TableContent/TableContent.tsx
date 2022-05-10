@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
 // Config
 import { IDataTable } from '~features/addTableForm/model/types';
@@ -12,7 +12,7 @@ import { getName } from '~shared/utils/getName';
 import { parseNameTable } from '~shared/utils/parseNameTable';
 
 // Components
-import { Tabs } from 'antd';
+import { Spin, Tabs } from 'antd';
 import { Table } from '~entities/Table';
 import { TableTotal } from '~entities/TableTotal';
 import { PDFDownload, TablesIdPDF } from '~features/PDFDownload';
@@ -24,6 +24,12 @@ interface TableListProps {
 }
 
 export const TableContent: FC<TableListProps> = ({ className, data }) => {
+  const [loading, setLoading] = useState<boolean>(false);
+
+  setTimeout(() => {
+    setLoading(true);
+  }, 300);
+
   return (
     <div className={cl(className, styles['table-content'])}>
       <Tabs defaultActiveKey='0'>
@@ -39,7 +45,7 @@ export const TableContent: FC<TableListProps> = ({ className, data }) => {
       </Tabs>
 
       <div className={cl(styles['table-content__pdf'])}>
-        <PDFDownload Template={<TablesIdPDF data={data} />} filename={getName(data).replace(' ', '_')} />
+        {loading ? <PDFDownload Template={<TablesIdPDF data={data} />} filename={getName(data).replace(' ', '_')} /> : <Spin className={cl(styles['table-content__pdf-spin'])} />}
       </div>
     </div>
   );

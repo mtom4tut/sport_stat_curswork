@@ -41,11 +41,13 @@ export const TableTotal: FC<TableTotalProps> = ({ className, data }) => {
     legsAePAndAnp,
     legsAeP,
     legsPowerAeP,
-    legsAnp,
+    legsAnP,
+    legsPowerAnP,
     armsAePAndAnp,
     armsAeP,
     armsPowerAeP,
-    armsAnp,
+    armsAnP,
+    armsPowerAnP,
   } = totalTableIdСalculations(data);
 
   return (
@@ -154,32 +156,46 @@ export const TableTotal: FC<TableTotalProps> = ({ className, data }) => {
       <hr />
 
       <div>
+        <h3 className={cl(styles['table-total__title'])}>Ноги: </h3>
         <p className={cl(styles['table-total__item'])}>
-          Мощность, АэП, Вт (ноги): <b>{legsPowerAeP}</b>
+          Мощность, АэП, Вт: <b>{legsPowerAeP}</b>
         </p>
         <p className={cl(styles['table-total__item'])}>
-          Мощность, АэП, Вт (плечевой пояс): <b>{armsPowerAeP}</b>
+          ЧСС АэП, уд/мин: <b>{legsAeP}</b>
         </p>
+        <p className={cl(styles['table-total__item'])}>
+          ПК АэП, л/мин: <b>{(legsPowerAeP / 75).toFixed(2)}</b>
+        </p>
+        <p className={cl(styles['table-total__item'])}>
+          Мощность, АнП, Вт: <b>{legsPowerAnP}</b>
+        </p>
+        <p className={cl(styles['table-total__item'])}>
+          ЧСС АнП, уд/мин: <b>{legsAnP}</b>
+        </p>
+        <p className={cl(styles['table-total__item'])}>
+          ПК АнП, л/мин: <b>{(legsPowerAnP / 75).toFixed(2)}</b>
+        </p>
+      </div>
 
+      <div>
+        <h3 className={cl(styles['table-total__title'])}>Плечевой пояс: </h3>
         <p className={cl(styles['table-total__item'])}>
-          ЧСС АэП, уд/мин (ноги): <b>{legsAeP}</b>
+          Мощность, АэП, Вт: <b>{armsPowerAeP}</b>
         </p>
         <p className={cl(styles['table-total__item'])}>
-          ЧСС АэП, уд/мин (плечевой пояс): <b>{armsAeP}</b>
-        </p>
-
-        <p className={cl(styles['table-total__item'])}>
-          ПК АэП, л/мин (ноги): <b>{(legsPowerAeP / 75).toFixed(2)}</b>
+          ЧСС АэП, уд/мин: <b>{armsAeP}</b>
         </p>
         <p className={cl(styles['table-total__item'])}>
-          ПК АэП, л/мин (плечевой пояс): <b>{(armsPowerAeP / 75).toFixed(2)}</b>
-        </p>
-
-        <p className={cl(styles['table-total__item'])}>
-          ЧСС АнП, уд/мин (ноги): <b>{legsAnp}</b>
+          ПК АэП, л/мин: <b>{(armsPowerAeP / 75).toFixed(2)}</b>
         </p>
         <p className={cl(styles['table-total__item'])}>
-          ЧСС АнП, уд/мин (плечевой пояс): <b>{armsAnp}</b>
+          Мощность, АнП, Вт: <b>{armsPowerAnP}</b>
+        </p>
+        <p className={cl(styles['table-total__item'])}>
+          ЧСС АнП, уд/мин: <b>{armsAnP}</b>
+        </p>
+        <p className={cl(styles['table-total__item'])}>
+          ПК АнП, л/мин: <b>{(armsPowerAnP / 75).toFixed(2)}</b>
         </p>
       </div>
     </>
