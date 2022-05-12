@@ -1,7 +1,7 @@
-import { FC } from 'react';
+import { FC, useMemo, useState } from 'react';
 
 // Components
-import { Collapse } from 'antd';
+import { Collapse, InputNumber } from 'antd';
 import CollapsePanel from 'antd/lib/collapse/CollapsePanel';
 import { Table } from '~entities/Table';
 
@@ -49,6 +49,52 @@ export const TableTotal: FC<TableTotalProps> = ({ className, data }) => {
     armsAnP,
     armsPowerAnP,
   } = totalTableIdСalculations(data);
+
+  const [legsMAM, setLegsMAM] = useState<number>(1000);
+  const [armsMAM, setArmsMAM] = useState<number>(900);
+
+  const info = {
+    OMB: 0,
+    PMB: 0,
+    GMB: 0,
+    AnpMPC: 0,
+    AnpMAM: 0,
+  };
+
+  const [legsInfo, setLegsInfo] = useState(info);
+  const [armsInfo, setArmsInfo] = useState(info);
+
+  useMemo(() => {
+    const OMB = (legsPowerAeP / legsMAM) * 200;
+    const PMB = (legsPowerAnP / legsMAM) * 200 - OMB;
+    const GMB = 100 - OMB - PMB;
+    const AnpMPC = typeof legsTotal == 'number' ? legsPowerAnP / legsTotal * 100 : 0;
+    const AnpMAM = legsPowerAnP / legsMAM * 100;
+
+    setLegsInfo({
+      OMB: Number(OMB.toFixed(2)),
+      PMB: Number(PMB.toFixed(2)),
+      GMB: Number(GMB.toFixed(2)),
+      AnpMPC: Number(AnpMPC.toFixed(2)),
+      AnpMAM: Number(AnpMAM.toFixed(2)),
+    });
+  }, [legsMAM]);
+
+  useMemo(() => {
+    const OMB = (armsPowerAeP / armsMAM) * 200;
+    const PMB = (armsPowerAnP / armsMAM) * 200 - OMB;
+    const GMB = 100 - OMB - PMB;
+    const AnpMPC = typeof armsTotal == 'number' ? armsPowerAnP / armsTotal * 100 : 0;
+    const AnpMAM = armsPowerAnP / armsMAM * 100;
+
+    setArmsInfo({
+      OMB: Number(OMB.toFixed(2)),
+      PMB: Number(PMB.toFixed(2)),
+      GMB: Number(GMB.toFixed(2)),
+      AnpMPC: Number(AnpMPC.toFixed(2)),
+      AnpMAM: Number(AnpMAM.toFixed(2)),
+    });
+  }, [armsMAM]);
 
   return (
     <>
@@ -175,6 +221,29 @@ export const TableTotal: FC<TableTotalProps> = ({ className, data }) => {
         <p className={cl(styles['table-total__item'])}>
           ПК АнП, л/мин: <b>{(legsPowerAnP / 75).toFixed(2)}</b>
         </p>
+        <div className={cl(styles['table-total__item'])}>
+          МАМ, Вт:
+          <InputNumber type='number' controls={false} value={legsMAM} onChange={e => setLegsMAM(e)} maxLength={6} />
+        </div>
+        <p className={cl(styles['table-total__item'])}>
+          ОМВ, %<b>{legsInfo.OMB}</b>
+        </p>
+        <p className={cl(styles['table-total__item'])}>
+          ПМВ, %:
+          <b>{legsInfo.PMB}</b>
+        </p>
+        <p className={cl(styles['table-total__item'])}>
+          ГМВ, %:
+          <b>{legsInfo.GMB}</b>
+        </p>
+        <p className={cl(styles['table-total__item'])}>
+          АнП от МПК, %:
+          <b> {legsInfo.AnpMPC}</b>
+        </p>
+        <p className={cl(styles['table-total__item'])}>
+          АнП от МАМ, %:
+          <b>{legsInfo.AnpMAM}</b>
+        </p>
       </div>
 
       <div>
@@ -196,6 +265,29 @@ export const TableTotal: FC<TableTotalProps> = ({ className, data }) => {
         </p>
         <p className={cl(styles['table-total__item'])}>
           ПК АнП, л/мин: <b>{(armsPowerAnP / 75).toFixed(2)}</b>
+        </p>
+        <div className={cl(styles['table-total__item'])}>
+          МАМ, Вт:
+          <InputNumber type='number' controls={false} value={armsMAM} onChange={e => setArmsMAM(e)} maxLength={6} />
+        </div>
+        <p className={cl(styles['table-total__item'])}>
+          ОМВ, %<b>{armsInfo.OMB}</b>
+        </p>
+        <p className={cl(styles['table-total__item'])}>
+          ПМВ, %:
+          <b>{armsInfo.PMB}</b>
+        </p>
+        <p className={cl(styles['table-total__item'])}>
+          ГМВ, %:
+          <b>{armsInfo.GMB}</b>
+        </p>
+        <p className={cl(styles['table-total__item'])}>
+          АнП от МПК, %:
+          <b>{armsInfo.AnpMPC}</b>
+        </p>
+        <p className={cl(styles['table-total__item'])}>
+          АнП от МАМ, %:
+          <b>{armsInfo.AnpMAM}</b>
         </p>
       </div>
     </>
