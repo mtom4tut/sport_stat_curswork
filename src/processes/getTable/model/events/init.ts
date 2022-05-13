@@ -3,26 +3,30 @@ import { createEvent } from 'effector';
 // Interface
 import { IDataTable } from '~features/addTableForm/model/types';
 
-// Config
-import { listNameTable } from '~processes/getTable/config/listNameTable';
+// Components
+import { MyMessage } from '~shared/ui/MyMessage';
 
-// Api
-import { getTableLists } from '~processes/getTable/api';
+export const initTableEvent = createEvent<IDataTable>();
 
-export const initTableEvent = createEvent<string[]>();
+export function init(state: IDataTable[], data: IDataTable) {
+  try {
+      state.push(data);
 
-export function init(tableId: string[]) {
-  const state: IDataTable[] = [];
+      // добавить данные в localstore
+      const storage = localStorage.getItem('tableId')
+      let tableId: string[] = storage ? JSON.parse(storage) : [];
+      tableId.push(data.spreadsheetId);
 
-  // получаем данные из lockalstorage
-  if (localStorage.getItem('auth') === 'false' && localStorage.getItem('tableId')) {
-    tableId = JSON.parse(localStorage.getItem('tableId')!);
+      const isEmpty = tableId.find(item => item === data.spreadsheetId);
+
+      if(!isEmpty && localStorage.getItem('auth') === 'false') {
+        localStorage.setItem('tableId', JSON.stringify(tableId));
+      }
+
+      return state;
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      MyMessage('error', 'Ошибка', err.message);
+    }
   }
-
-  tableId.map(async id => {
-    const data = await getTableLists<IDataTable>(id, listNameTable);
-    state.push(data);
-  });
-
-  return state;
 }

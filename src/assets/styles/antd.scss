@@ -15,3 +15,11 @@
 .ant-spin {
   margin-top: 20vh !important;
 }
+
+.pdf-btn__spin {
+  margin-top: 2px !important;
+
+  .ant-spin-dot-item {
+    background-color: $background-color-default !important;
+  }
+}

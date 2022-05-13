@@ -3,12 +3,22 @@
   justify-content: center;
   align-items: center;
   width: 30px;
+  height: 30px;
   margin-left: auto;
+  padding-top: 0 !important;
 
   svg {
     fill: $text-color-basic;
     width: 30px;
     height: 30px;
     flex-shrink: 0;
+  }
+
+  &__spin {
+    margin-top: 8px !important;
+
+    .ant-spin-dot-item {
+      background-color: red !important;
+    }
   }
 }

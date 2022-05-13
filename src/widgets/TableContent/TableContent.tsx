@@ -24,12 +24,6 @@ interface TableListProps {
 }
 
 export const TableContent: FC<TableListProps> = ({ className, data }) => {
-  const [loading, setLoading] = useState<boolean>(false);
-
-  setTimeout(() => {
-    setLoading(true);
-  }, 300);
-
   return (
     <div className={cl(className, styles['table-content'])}>
       <Tabs defaultActiveKey='0'>
@@ -45,7 +39,7 @@ export const TableContent: FC<TableListProps> = ({ className, data }) => {
       </Tabs>
 
       <div className={cl(styles['table-content__pdf'])}>
-        {loading ? <PDFDownload Template={<TablesIdPDF data={data} />} filename={getName(data).replace(' ', '_')} /> : <Spin className={cl(styles['table-content__pdf-spin'])} />}
+        <PDFDownload Template={<TablesIdPDF data={data} />} filename={getName(data).replace(' ', '_')} />
       </div>
     </div>
   );
