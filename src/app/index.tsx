@@ -8,6 +8,7 @@ import { Spin } from 'antd';
 // Store
 import { useStore } from 'effector-react';
 import { $storeAuth } from '~processes/auth/model/store';
+import { $storeTables } from '~processes/getTable/model/store';
 
 // Event
 import { initTableEvent } from '~processes/getTable/model/events/init';
@@ -26,8 +27,10 @@ import { useFetching } from '~shared/hooks/useFetching';
 // Helpers
 import { initToken } from '~processes/auth/helpers/initToken';
 import { getTableLists } from '~processes/getTable/api';
+import { setAuthStatus } from '~processes/auth/model/event/setAuthStatus';
 
 export const App = () => {
+  useStore($storeTables)
   const statusAuth = useStore($storeAuth);
 
   const [fetchInit, isLoading] = useFetching(init);
@@ -39,16 +42,20 @@ export const App = () => {
 
     if (auth?.data) {
       const data = await getTableId();
-      dataTableId = data?.data ? data?.data : []
+      dataTableId = data?.data ? data?.data : [];
+      setAuthStatus(true);
     } else {
-      const storage = localStorage.getItem('tableId')
+      const storage = localStorage.getItem('tableId');
       dataTableId = storage ? JSON.parse(storage) : [];
+      setAuthStatus(false);
     }
 
-    await Promise.all(dataTableId.map(async id => {
-      const data = await getTableLists<IDataTable>(id, listNameTable);
-      initTableEvent(data);
-    }));
+    await Promise.all(
+      dataTableId.map(async id => {
+        const data = await getTableLists<IDataTable>(id, listNameTable);
+        initTableEvent(data);
+      })
+    );
   }
 
   useEffect(() => {

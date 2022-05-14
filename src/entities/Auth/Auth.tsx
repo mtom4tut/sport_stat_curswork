@@ -1,5 +1,4 @@
 import { FC, useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router';
 
 // Styles
 import cl from 'classnames';
@@ -14,6 +13,7 @@ import { $storeAuth } from '~processes/auth/model/store';
 
 // Event
 import { setAuthStatus } from '~processes/auth/model/event/setAuthStatus';
+import { resetTableEvent } from '~processes/getTable/model/events/reset';
 
 // Components
 import { Button, Form, Modal } from 'antd';
@@ -34,7 +34,6 @@ interface AuthProps {
 }
 
 export const Auth: FC<AuthProps> = ({ className }) => {
-  const navigate = useNavigate();
   const statusAuth = useStore($storeAuth);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false); // модальное окно
 
@@ -53,7 +52,7 @@ export const Auth: FC<AuthProps> = ({ className }) => {
   async function logOut() {
     await logOutAccount();
     setAuthStatus(false);
-    navigate('/');
+    resetTableEvent('');
   }
 
   // callback функция
@@ -81,9 +80,9 @@ export const Auth: FC<AuthProps> = ({ className }) => {
       MyMessage('success', 'Выполнено', 'Аккаунт успешно создан');
     }
 
+    resetTableEvent('');
     setAuthStatus(true);
     handleCancel();
-    navigate('/');
   }
 
   // сработает по событию submit если форма заполнена без ошибок

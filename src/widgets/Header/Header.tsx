@@ -9,7 +9,6 @@ import { Container } from '~shared/layout/Container';
 import Navigation from '~shared/ui/Navigation/Navigation';
 import { Auth } from '~entities/Auth';
 
-
 // Styles
 import cl from 'classnames';
 import styles from './Header.module.scss';

@@ -19,7 +19,6 @@ import { IDataTable } from '~features/addTableForm/model/types';
 import cl from 'classnames';
 import styles from './TableTotal.module.scss';
 import { insertDataTotal } from '~processes/auth/api';
-import { useParams } from 'react-router';
 
 interface TableTotalProps {
   className?: string;
@@ -74,7 +73,7 @@ export const TableTotal: FC<TableTotalProps> = ({ className, data }) => {
     const OMB = (legsPowerAeP / legsMAM) * 200;
     const PMB = (legsPowerAnP / legsMAM) * 200 - OMB;
     const GMB = 100 - OMB - PMB;
-    const AnpMPC = typeof legsTotal == 'number' ? (legsPowerAnP / legsTotal) * 100 : 0;
+    const AnpMPC = (legsPowerAnP / legsTotal) * 100;
     const AnpMAM = (legsPowerAnP / legsMAM) * 100;
 
     setLegsInfo({
@@ -84,13 +83,13 @@ export const TableTotal: FC<TableTotalProps> = ({ className, data }) => {
       AnpMPC: Number(AnpMPC.toFixed(2)),
       AnpMAM: Number(AnpMAM.toFixed(2)),
     });
-  }, [legsMAM]);
+  }, [legsMAM, legsPowerAeP, legsPowerAnP, legsTotal]);
 
   useMemo(() => {
     const OMB = (armsPowerAeP / armsMAM) * 200;
     const PMB = (armsPowerAnP / armsMAM) * 200 - OMB;
     const GMB = 100 - OMB - PMB;
-    const AnpMPC = typeof armsTotal == 'number' ? (armsPowerAnP / armsTotal) * 100 : 0;
+    const AnpMPC = (armsPowerAnP / armsTotal) * 100 ;
     const AnpMAM = (armsPowerAnP / armsMAM) * 100;
 
     setArmsInfo({
@@ -100,7 +99,7 @@ export const TableTotal: FC<TableTotalProps> = ({ className, data }) => {
       AnpMPC: Number(AnpMPC.toFixed(2)),
       AnpMAM: Number(AnpMAM.toFixed(2)),
     });
-  }, [armsMAM]);
+  }, [armsMAM, armsPowerAeP, armsPowerAnP, armsTotal]);
 
   const [fetchSaveDataBase, isLoadingSaveDataBase] = useFetching(saveDataBase);
 
