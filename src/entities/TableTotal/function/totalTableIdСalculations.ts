@@ -57,13 +57,13 @@ export function totalTableIdСalculations(data: IDataTable) {
 
   // /////////// УОС ноги
   const legsYOC = YOC(legs, weight);
-  const legsMaxYOC = legsYOC[legsYOC.length - 1][2];
+  const legsMaxYOC = parseFloat(legsYOC[legsYOC.length - 1][2]);
   const legsHeartRateMaxYOC = legsYOC[legsYOC.length - 1][0];
   legsYOC.unshift(['ЧСС', 'Мощность', 'УОС']);
 
   // /////////// УОС плечевой пояс
   const armsYOC = YOC(arms, weight);
-  const armsMaxYOC = armsYOC[armsYOC.length - 1][2];
+  const armsMaxYOC = parseFloat(armsYOC[armsYOC.length - 1][2]);
   const armsHeartRateMaxYOC = armsYOC[armsYOC.length - 1][0];
   armsYOC.unshift(['ЧСС', 'Мощность', 'УОС']);
 

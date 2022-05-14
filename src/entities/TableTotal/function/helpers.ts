@@ -38,7 +38,7 @@ export function powerTotal(
   diffTime: number | 'Нет данных',
   startTime: number | undefined
 ) {
-  let legsTotal: number | 'Нет данных' = 'Нет данных';
+  let legsTotal: number = -1;
 
   if (stageNum && stageLastNum && startTime && diffTime !== 'Нет данных') {
     legsTotal = stageNum + ((stageLastNum - stageNum) * diffTime) / startTime;

@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 
 // Config
 import { IDataTable } from '~features/addTableForm/model/types';
@@ -12,7 +12,7 @@ import { getName } from '~shared/utils/getName';
 import { parseNameTable } from '~shared/utils/parseNameTable';
 
 // Components
-import { Spin, Tabs } from 'antd';
+import { Tabs } from 'antd';
 import { Table } from '~entities/Table';
 import { TableTotal } from '~entities/TableTotal';
 import { PDFDownload, TablesIdPDF } from '~features/PDFDownload';

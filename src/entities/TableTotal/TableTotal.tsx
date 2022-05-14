@@ -1,9 +1,13 @@
 import { FC, useMemo, useState } from 'react';
 
 // Components
-import { Collapse, InputNumber } from 'antd';
+import { Button, Collapse, InputNumber } from 'antd';
 import CollapsePanel from 'antd/lib/collapse/CollapsePanel';
 import { Table } from '~entities/Table';
+import { MyMessage } from '~shared/ui/MyMessage';
+
+// Hook
+import { useFetching } from '~shared/hooks/useFetching';
 
 // Functions
 import { totalTableIdСalculations } from '~entities/TableTotal/function/totalTableIdСalculations';
@@ -14,6 +18,8 @@ import { IDataTable } from '~features/addTableForm/model/types';
 // Styles
 import cl from 'classnames';
 import styles from './TableTotal.module.scss';
+import { insertDataTotal } from '~processes/auth/api';
+import { useParams } from 'react-router';
 
 interface TableTotalProps {
   className?: string;
@@ -51,7 +57,7 @@ export const TableTotal: FC<TableTotalProps> = ({ className, data }) => {
   } = totalTableIdСalculations(data);
 
   const [legsMAM, setLegsMAM] = useState<number>(1000);
-  const [armsMAM, setArmsMAM] = useState<number>(900);
+  const [armsMAM, setArmsMAM] = useState<number>(270);
 
   const info = {
     OMB: 0,
@@ -68,8 +74,8 @@ export const TableTotal: FC<TableTotalProps> = ({ className, data }) => {
     const OMB = (legsPowerAeP / legsMAM) * 200;
     const PMB = (legsPowerAnP / legsMAM) * 200 - OMB;
     const GMB = 100 - OMB - PMB;
-    const AnpMPC = typeof legsTotal == 'number' ? legsPowerAnP / legsTotal * 100 : 0;
-    const AnpMAM = legsPowerAnP / legsMAM * 100;
+    const AnpMPC = typeof legsTotal == 'number' ? (legsPowerAnP / legsTotal) * 100 : 0;
+    const AnpMAM = (legsPowerAnP / legsMAM) * 100;
 
     setLegsInfo({
       OMB: Number(OMB.toFixed(2)),
@@ -84,8 +90,8 @@ export const TableTotal: FC<TableTotalProps> = ({ className, data }) => {
     const OMB = (armsPowerAeP / armsMAM) * 200;
     const PMB = (armsPowerAnP / armsMAM) * 200 - OMB;
     const GMB = 100 - OMB - PMB;
-    const AnpMPC = typeof armsTotal == 'number' ? armsPowerAnP / armsTotal * 100 : 0;
-    const AnpMAM = armsPowerAnP / armsMAM * 100;
+    const AnpMPC = typeof armsTotal == 'number' ? (armsPowerAnP / armsTotal) * 100 : 0;
+    const AnpMAM = (armsPowerAnP / armsMAM) * 100;
 
     setArmsInfo({
       OMB: Number(OMB.toFixed(2)),
@@ -96,8 +102,49 @@ export const TableTotal: FC<TableTotalProps> = ({ className, data }) => {
     });
   }, [armsMAM]);
 
+  const [fetchSaveDataBase, isLoadingSaveDataBase] = useFetching(saveDataBase);
+
+  async function saveDataBase() {
+    const value = data.valueRanges[0].values.at(1);
+
+    if (value) {
+      let date: string = String(value[2]).split('.').reverse().join('-');
+
+      const response = await insertDataTotal(
+        data.spreadsheetId,
+        String(value[0]),
+        Number(value[4]),
+        Number(value[3]),
+        date,
+        legsPowerAeP,
+        armsPowerAeP,
+        legsAeP,
+        armsAeP,
+        legsPowerAnP,
+        armsPowerAnP,
+        legsAnP,
+        armsAnP,
+        legsTotal,
+        armsTotal,
+        legsMaxYOC,
+        armsMaxYOC
+      );
+
+      if (response?.data) {
+        MyMessage('error', 'Ошибка', response.data);
+      } else {
+        MyMessage('success', 'Выполнено', 'Данные сохранены в базу данных');
+      }
+    }
+  }
+
   return (
     <>
+      <div className={cl(styles['btn-block'])}>
+        <Button loading={isLoadingSaveDataBase} type='primary' onClick={fetchSaveDataBase}>
+          Сохранить в базу данных
+        </Button>
+      </div>
       <Collapse className={cl(className, styles['table-total'])} ghost>
         <CollapsePanel header='Ноги' key='1'>
           <dl>

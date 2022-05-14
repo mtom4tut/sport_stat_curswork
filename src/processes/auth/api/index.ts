@@ -139,3 +139,53 @@ export const getTableId = async () => {
     }
   }
 };
+
+export const insertDataTotal = async (
+  id: string,
+  name_sportsmen: string,
+  weight_sportsmen: number,
+  age_sportsmen: number,
+  date_passing: string,
+  aerobic_p_legs: number,
+  aerobic_p_args: number,
+  heart_rate_aerobic_legs: number,
+  heart_rate_aerobic_args: number,
+  anaerobic_p_legs: number,
+  anaerobic_p_args: number,
+  heart_rate_anaerobic_legs: number,
+  heart_rate_anaerobic_args: number,
+  mpk_legs: number,
+  mpk_args: number,
+  yoc_max_legs: number,
+  yoc_max_args: number
+) => {
+  try {
+    const data = await instance.post<string>('/insertTotal.php', {
+      id,
+      name_sportsmen,
+      weight_sportsmen,
+      age_sportsmen,
+      date_passing,
+      aerobic_p_legs,
+      aerobic_p_args,
+      heart_rate_aerobic_legs,
+      heart_rate_aerobic_args,
+      anaerobic_p_legs,
+      anaerobic_p_args,
+      heart_rate_anaerobic_legs,
+      heart_rate_anaerobic_args,
+      mpk_legs,
+      mpk_args,
+      yoc_max_legs,
+      yoc_max_args,
+    });
+    if (data.status !== 200) {
+      MyMessage('error', 'Ошибка', String(data.status));
+    }
+    return data;
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      MyMessage('error', 'Ошибка', err.message);
+    }
+  }
+};
