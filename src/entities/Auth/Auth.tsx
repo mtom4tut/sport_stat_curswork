@@ -133,7 +133,7 @@ export const Auth: FC<AuthProps> = ({ className }) => {
           />
 
           {menu === MENU_ITEMS.registration && (
-            <AuthPassword className={cl(styles['auth-modal__input'])} registrationMod={true} name='passwordCheck' />
+            <AuthPassword placeholder="Введите пароль еще раз" className={cl(styles['auth-modal__input'])} registrationMod={true} name='passwordCheck' />
           )}
 
           <Button

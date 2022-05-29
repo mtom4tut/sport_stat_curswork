@@ -12,9 +12,10 @@ interface AuthPasswordProps {
   className?: string;
   registrationMod?: boolean;
   name?: string;
+  placeholder?: string;
 }
 
-export const AuthPassword: FC<AuthPasswordProps> = ({ className, registrationMod, name = 'password' }) => {
+export const AuthPassword: FC<AuthPasswordProps> = ({ className, registrationMod, name = 'password', placeholder = 'Введите пароль' }) => {
   return (
     <Form.Item
       name={name}
@@ -38,7 +39,7 @@ export const AuthPassword: FC<AuthPasswordProps> = ({ className, registrationMod
       ]}
     >
       <Space>
-        <Input.Password name={name} className={cl(styles['form-item__input'])} placeholder='Введите пароль' autoComplete="on" />
+        <Input.Password name={name} className={cl(styles['form-item__input'])} placeholder={placeholder} autoComplete="on" />
       </Space>
     </Form.Item>
   );
