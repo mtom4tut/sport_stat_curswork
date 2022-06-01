@@ -272,7 +272,7 @@ export const TableTotal: FC<TableTotalProps> = ({ className, data }) => {
           <InputNumber type='number' controls={false} value={legsMAM} onChange={e => setLegsMAM(e)} maxLength={6} />
         </div>
         <p className={cl(styles['table-total__item'])}>
-          ОМВ, %<b>{legsInfo.OMB}</b>
+          ОМВ, %: <b>{legsInfo.OMB}</b>
         </p>
         <p className={cl(styles['table-total__item'])}>
           ПМВ, %:

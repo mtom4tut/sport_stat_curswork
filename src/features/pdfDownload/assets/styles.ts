@@ -64,4 +64,11 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     borderRight: '1px solid black',
   },
+  tableItemSmall: {
+    width: 130,
+    fontSize: 11,
+    fontWeight: 400,
+    textAlign: 'center',
+    borderRight: '1px solid black',
+  },
 });

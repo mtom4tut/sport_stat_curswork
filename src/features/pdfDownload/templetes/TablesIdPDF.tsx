@@ -44,7 +44,36 @@ export const TablesIdPDF: FC<TablesPDFProps> = ({ data }) => {
     armsTotal,
     legsYOC,
     armsYOC,
+    legsMaxYOC,
+    legsHeartRateMaxYOC,
+    armsMaxYOC,
+    armsHeartRateMaxYOC,
+    legsAePAndAnp,
+    legsAeP,
+    legsPowerAeP,
+    legsAnP,
+    legsPowerAnP,
+    armsAePAndAnp,
+    armsAeP,
+    armsPowerAeP,
+    armsAnP,
+    armsPowerAnP,
   } = totalTableIdСalculations(data);
+
+  const legsMAM = 1000;
+  const armsMAM = 270;
+
+  const legsOMB = (legsPowerAeP / legsMAM) * 200;
+  const legsPMB = (legsPowerAnP / legsMAM) * 200 - legsOMB;
+  const legsGMB = 100 - legsOMB - legsPMB;
+  const legsAnpMPC = (legsPowerAnP / legsTotal) * 100;
+  const legsAnpMAM = (legsPowerAnP / legsMAM) * 100;
+
+  const armsOMB = (armsPowerAeP / armsMAM) * 200;
+  const armsPMB = (armsPowerAnP / armsMAM) * 200 - armsOMB;
+  const armsGMB = 100 - armsOMB - armsPMB;
+  const armsAnpMPC = (armsPowerAnP / armsTotal) * 100 ;
+  const armsAnpMAM = (armsPowerAnP / armsMAM) * 100;
 
   return (
     <LayoutPDF>
@@ -126,6 +155,10 @@ export const TablesIdPDF: FC<TablesPDFProps> = ({ data }) => {
               <Text style={styles.tableItemBig}>{row[2]}</Text>
             </View>
           ))}
+          <View style={styles.view}>
+            <Text style={styles.defaultText}>УОС max, мл: {legsMaxYOC}</Text>
+            <Text style={styles.defaultText}>ЧСС УОС max, уд/мин: {legsHeartRateMaxYOC}</Text>
+          </View>
         </View>
 
         <View style={styles.view}>
@@ -137,6 +170,89 @@ export const TablesIdPDF: FC<TablesPDFProps> = ({ data }) => {
               <Text style={styles.tableItemBig}>{row[2]}</Text>
             </View>
           ))}
+          <View style={styles.view}>
+            <Text style={styles.defaultText}>УОС max, мл: {armsMaxYOC}</Text>
+            <Text style={styles.defaultText}>ЧСС УОС max, уд/мин: {armsHeartRateMaxYOC}</Text>
+          </View>
+        </View>
+      </Page>
+      <Page size='A4' orientation='landscape' style={styles.page}>
+        <View style={styles.view}>
+          <Text style={styles.titleH2}>АэП и АнП ноги</Text>
+        </View>
+        {legsAePAndAnp.map((row, i) => (
+          <View key={i} style={styles.table}>
+            <Text style={styles.tableItem}>{row[0]}</Text>
+            <Text style={styles.tableItemSmall}>{row[1]}</Text>
+            <Text style={styles.tableItemSmall}>{row[2]}</Text>
+            <Text style={styles.tableItem}>{row[3]}</Text>
+            <Text style={styles.tableItem}>{row[4]}</Text>
+            <Text style={styles.tableItemBig}>{row[5]}</Text>
+            <Text style={styles.tableItemBig}>{row[6]}</Text>
+            <Text style={styles.tableItemSmall}>{row[7]}</Text>
+            <Text style={styles.tableItemSmall}>{row[8]}</Text>
+            <Text style={styles.tableItemSmall}>{row[9]}</Text>
+            <Text style={styles.tableItemSmall}>{row[10]}</Text>
+            <Text style={styles.tableItemSmall}>{row[11]}</Text>
+            <Text style={styles.tableItemSmall}>{row[12]}</Text>
+          </View>
+        ))}
+
+        <View style={styles.view}></View>
+        <View style={styles.view}></View>
+
+        <View style={styles.view}>
+          <Text style={styles.titleH2}>АэП и АнП плечевой пояс</Text>
+        </View>
+        {armsAePAndAnp.map((row, i) => (
+          <View key={i} style={styles.table}>
+            <Text style={styles.tableItem}>{row[0]}</Text>
+            <Text style={styles.tableItemSmall}>{row[1]}</Text>
+            <Text style={styles.tableItemSmall}>{row[2]}</Text>
+            <Text style={styles.tableItem}>{row[3]}</Text>
+            <Text style={styles.tableItem}>{row[4]}</Text>
+            <Text style={styles.tableItemBig}>{row[5]}</Text>
+            <Text style={styles.tableItemBig}>{row[6]}</Text>
+            <Text style={styles.tableItemSmall}>{row[7]}</Text>
+            <Text style={styles.tableItemSmall}>{row[8]}</Text>
+            <Text style={styles.tableItemSmall}>{row[9]}</Text>
+            <Text style={styles.tableItemSmall}>{row[10]}</Text>
+            <Text style={styles.tableItemSmall}>{row[11]}</Text>
+            <Text style={styles.tableItemSmall}>{row[12]}</Text>
+          </View>
+        ))}
+      </Page>
+      <Page size='A4' style={styles.page}>
+        <View style={styles.view}>
+          <Text style={styles.titleH3}>Ноги</Text>
+          <Text style={styles.defaultText}>Мощность, АэП, Вт: {legsPowerAeP}</Text>
+          <Text style={styles.defaultText}>ЧСС АэП, уд/мин: {legsAeP}</Text>
+          <Text style={styles.defaultText}>ПК АэП, л/мин: {(legsPowerAeP / 75).toFixed(2)}</Text>
+          <Text style={styles.defaultText}>Мощность, АнП, Вт: {legsPowerAnP}</Text>
+          <Text style={styles.defaultText}>ЧСС АнП, уд/мин: {legsAnP}</Text>
+          <Text style={styles.defaultText}>ПК АнП, л/мин: {(legsPowerAnP / 75).toFixed(2)}</Text>
+          <Text style={styles.defaultText}>МАМ, Вт: {legsMAM}</Text>
+          <Text style={styles.defaultText}>ОМВ, %: {legsOMB.toFixed(2)}</Text>
+          <Text style={styles.defaultText}>ПМВ, %: {legsPMB.toFixed(2)}</Text>
+          <Text style={styles.defaultText}>ГМВ, %: {legsGMB.toFixed(2)}</Text>
+          <Text style={styles.defaultText}>АнП от МПК, %: {legsAnpMPC.toFixed(2)}</Text>
+          <Text style={styles.defaultText}>АнП от МАМ, %: {legsAnpMAM.toFixed(2)}</Text>
+        </View>
+
+        <View style={styles.view}>
+          <Text style={styles.titleH3}>Плечевой пояс</Text>
+          <Text style={styles.defaultText}>Мощность, АэП, Вт: {armsPowerAeP}</Text>
+          <Text style={styles.defaultText}>ЧСС АэП, уд/мин: {armsAeP}</Text>
+          <Text style={styles.defaultText}>ПК АэП, л/мин: {(armsPowerAeP / 75).toFixed(2)}</Text>
+          <Text style={styles.defaultText}>Мощность, АнП, Вт: {armsPowerAnP}</Text>
+          <Text style={styles.defaultText}>ЧСС АнП, уд/мин: {armsAnP}</Text>
+          <Text style={styles.defaultText}>ПК АнП, л/мин: {(armsPowerAnP / 75).toFixed(2)}</Text>
+          <Text style={styles.defaultText}>МАМ, Вт: {armsMAM}</Text>
+          <Text style={styles.defaultText}>ОМВ, %: {armsOMB.toFixed(2)}</Text>
+          <Text style={styles.defaultText}>ПМВ, %: {armsPMB.toFixed(2)}</Text>
+          <Text style={styles.defaultText}>ГМВ, %: {armsGMB.toFixed(2)}</Text>
+          <Text style={styles.defaultText}>АнП от МПК, %: {armsAnpMPC.toFixed(2)}</Text>
+          <Text style={styles.defaultText}>АнП от МАМ, %: {armsAnpMAM.toFixed(2)}</Text>
         </View>
       </Page>
     </LayoutPDF>
